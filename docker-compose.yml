@@ -1,0 +1,34 @@
+version: '2'
+services:
+  web:
+    build: ./web/.
+    ports:
+      - "8028:80"
+    depends_on:
+      - db
+      - rank
+    restart: always
+
+  db:
+    image: mysql:5
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    volumes:
+      - ./db:/code
+      - /data/wca/mysql:/var/lib/mysql
+    ports:
+      - "3328:3306"
+    env_file:
+      - .env
+
+  rank:
+    image: tomcat:8.5
+    depends_on:
+      - db
+    restart: always
+    volumes:
+      - ./rank/target/rank-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/rank.war
+      - ./rank/server.xml:/usr/local/tomcat/conf/server.xml
+      - /data/wca/tomcat:/usr/local/tomcat/logs
+    ports:
+      - "8888:8080"

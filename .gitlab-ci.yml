@@ -1,0 +1,27 @@
+stages:
+  - check_env
+  - auto_devops
+
+check:
+  stage: check_env
+  tags:
+    - docker
+    - maven
+  script:
+    - docker -v
+    - java -version
+    - mvn -v
+
+deploy:
+  stage: auto_devops
+  tags:
+    - docker
+    - maven
+    - web
+  script:
+    - cd rank && mvn package -Dmaven.test.skip=true
+    - cd ./..
+    - cp .env.bak .env
+    - docker-compose build
+    - docker-compose stop
+    - nohup docker-compose up >> /var/log/web/wca.log 2>&1 &

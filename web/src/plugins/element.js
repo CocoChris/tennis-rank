@@ -1,0 +1,60 @@
+import Vue from 'vue'
+import {
+  Aside,
+  Button,
+  Card,
+  Checkbox,
+  CheckboxButton,
+  CheckboxGroup,
+  Col,
+  Container,
+  Dropdown,
+  DropdownItem,
+  DropdownMenu,
+  Header,
+  Input,
+  Loading,
+  Main,
+  Menu,
+  MenuItem,
+  MenuItemGroup,
+  Option,
+  Progress,
+  RadioButton,
+  RadioGroup,
+  Row,
+  Select,
+  Submenu,
+  Table,
+  TableColumn
+} from 'element-ui'
+import Util from '@/plugins/util.js'
+
+Vue.use(Aside)
+Vue.use(Button)
+Vue.use(Card)
+Vue.use(Checkbox)
+Vue.use(CheckboxButton)
+Vue.use(CheckboxGroup)
+Vue.use(Col)
+Vue.use(Container)
+Vue.use(Dropdown)
+Vue.use(DropdownItem)
+Vue.use(DropdownMenu)
+Vue.use(Header)
+Vue.use(Input)
+Vue.use(Loading)
+Vue.use(Main)
+Vue.use(Menu)
+Vue.use(MenuItem)
+Vue.use(MenuItemGroup)
+Vue.use(Option)
+Vue.use(Progress)
+Vue.use(RadioButton)
+Vue.use(RadioGroup)
+Vue.use(Row)
+Vue.use(Select)
+Vue.use(Submenu)
+Vue.use(Table)
+Vue.use(TableColumn)
+Vue.use(Util)

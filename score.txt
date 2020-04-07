@@ -1,0 +1,226 @@
+// week 1
+ScoreBoardPojo scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QFi", 2, "只要有馨", 7, "点点星星", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QFi", 2, "先手观音小冰玉", 1, "治水女皇", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QFi", 2, "小婊贝贝一扎", 5, "小维的小瓜", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QFi", 2, "宇琼轩笙", 10, "妓女", 4);
+scoreBoardService.insert(scoreBoardPojo);
+
+
+ScoreBoardPojo scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "鸡米打四飞", 8, "好好4我", 5);
+scoreBoardService.insert(scoreBoardPojo);
+ScoreBoardPojo scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "GOCHA123", 7, "力力力_ling", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "崴脚也能赢", 7, "偷不了分", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "金恩静逼飞奶炸", 10, "要怎样", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "哈皮柠檬", 7, "虚伪的笑", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "技术不到位", 5, "童可欣", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "天才少女焉会", 11, "爱冰壶", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "cute德约", 6, "roger裙裙", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "小狼", 8, "花花", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "Ji-sun Kim", 2, "无经纬", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "网球吧桔梗小维", 5, "Majingyi", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "Radwanska", 5, "Reputation", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "宇琼轩笙", 8, "先手观音小冰玉", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "后手如来", 3, "zverev", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "Al（OH）3", 6, "只要有馨", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R32", 2, "小婊贝贝一扎", 1, "点点星星", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "GOCHA123", 7, "鸡米打四飞", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "哈皮柠檬", 8, "金恩静逼飞奶炸", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "天才少女焉会", 1, "小婊贝贝一扎", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "Radwanska", 8, "宇琼轩笙", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "技术不到位", 4, "Al（OH）3", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "cute德约", 7, "小狼", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "Ji-sun Kim", 8, "网球吧桔梗小维", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "R16", 2, "后手如来", 6, "崴脚也能赢", 4);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QF", 2, "GOCHA123", 5, "技术不到位", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QF", 2, "哈皮柠檬", 5, "Radwanska", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QF", 2, "天才少女焉会", 6, "后手如来", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "QF", 2, "Ji-sun Kim", 6, "cute德约", 3);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "SF", 2, "天才少女焉会", 7, "GOCHA123", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "SF", 2, "哈皮柠檬", 7, "Ji-sun Kim", 0);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("阿卡普尔科公开赛", "F", 2, "哈皮柠檬", 7, "天才少女焉会", 1);
+scoreBoardService.insert(scoreBoardPojo);
+
+
+// week 2
+ScoreBoardPojo scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Radwanska", 20, "点点星星", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "偷不了分", 5, "zverev", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "肥梅", 9, "鸡米打四飞", 7);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "LSM", 6, "童可欣", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Zhuper", 7, "Regan", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "宇琼轩笙", 3, "要怎样", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "治水女皇", 10, "zhaigang24", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "lv鸡哥", 8, "82我是猪", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "无经纬", 7, "爱冰壶", 6);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Ji-sun Kim", 9, "科维托丽萨", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "轮轮", 5, "巴德鑫老公", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "只要有馨", 7, "bingyuslay", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "小婊贝贝一扎", 7, "力力力_ling", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Hurry太阳", 8, "cute德约", 6);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Lisa阿姨", 10, "sggg", 7);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Demon 15", 9, "擦一擦呦", 8);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Majingyi", 5, "donggood", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "小狼", 11, "Carl Chong", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "虚伪的笑", 6, "kkiddo", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "花花", 5, "1231986", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "金恩静逼飞奶炸", 7, "好好4我", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R64", 2, "Al（OH）3", 4, "先手观音小冰玉", 3);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "技术不到位", 10, "Radwanska", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "偷不了分", 8, "肥梅", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "崴脚也能赢", 1, "LSM", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "网球吧桔梗小维", 5, "Zhuper", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "韩馨蕴", 13, "宇琼轩笙", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "莉莉金", 7, "治水女皇", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "无经纬", 1, "lv鸡哥", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "roger裙裙", 4, "Ji-sun Kim", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "Reputation", 9, "轮轮", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "小婊贝贝一扎", 8, "只要有馨", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "Hurry太阳", 8, "Lisa阿姨", 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "Demon 15", 11, "GOCHA123", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "Majingyi", 6, "天才少女焉会", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "虚伪的笑", 7, "小狼", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "花花", 7, "金恩静逼飞奶炸", 6);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R32", 2, "后手如来", 5, "Al（OH）3", 4);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "技术不到位", 11, "偷不了分", 6);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "崴脚也能赢", 7, "网球吧桔梗小维", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "韩馨蕴", 12, "莉莉金", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "roger裙裙", 11, "无经纬", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "Reputation", 6, "小婊贝贝一扎", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "Demon 15", 9, "Hurry太阳", 8);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "Majingyi", 7, "虚伪的笑", 6);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "R16", 2, "后手如来", 8, "花花", 4);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "QF", 2, "崴脚也能赢", 8, "技术不到位", 7);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "QF", 2, "roger裙裙", 10, "韩馨蕴", 7);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "QF", 2, "Reputation", 9, "Demon 15", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "QF", 2, "后手如来", 7, "Majingyi", 4);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "SF", 2, "roger裙裙", 10, "崴脚也能赢", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "SF", 2, "后手如来", 8, "Reputation", 3);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("印第安维尔斯公开赛", "F", 2, "后手如来", 10, "roger裙裙", 8);
+scoreBoardService.insert(scoreBoardPojo);
+
+
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "QF", 2, "黄大宪", 7, "kkiddo", 5);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "QF", 2, "好好4我", 6, "Radwanska", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "QF", 2, "沈嘻嘻嘻", 5, "小狼", 4);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "QF", 2, "制裁韩馨蕴", 7, "要怎样", 3);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "SF", 2, "好好4我", 3, "黄大宪", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "SF", 2, "制裁韩馨蕴", 1, "沈嘻嘻嘻", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Homan25K", "F", 2, "制裁韩馨蕴", 14, "好好4我", 1);
+scoreBoardService.insert(scoreBoardPojo);
+
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "QF", 2, "Al（OH）3", 1, "豆豆不长痘", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "QF", 2, "治水女皇", 1, "donggood", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "QF", 2, "轮轮", 1, "科维托丽萨", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "QF", 2, "无经纬", 7, "先手观音小冰玉", 0);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "SF", 2, "Al（OH）3", 1, "治水女皇", 0, 1);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "SF", 2, "轮轮", 7, "无经纬", 2);
+scoreBoardService.insert(scoreBoardPojo);
+scoreBoardPojo = new ScoreBoardPojo("Jones25K", "F", 2, "轮轮", 5, "Al（OH）3", 1);
+scoreBoardService.insert(scoreBoardPojo);
+
+
+
+
