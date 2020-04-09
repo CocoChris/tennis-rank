@@ -31,4 +31,4 @@ new Vue({
 })
 
 // Vue.http.options.root = 'http://www.wca.today/'
-Vue.http.options.root = 'http://localhost/'
+Vue.http.options.root = 'http://localhost:8080/'
