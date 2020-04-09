@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ita.rank.dao.ScoreBoardMapper" >
+  <resultMap id="BaseResultMap" type="com.ita.rank.pojo.ScoreBoardPojo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="event_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="event_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="round" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="week" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="season" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_1_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_1_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="player_1_score" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_2_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_2_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="player_2_score" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="event_level" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="handle" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, event_id, event_name, round, week, season, player_1_id, player_1_name, player_1_score, 
+    player_2_id, player_2_name, player_2_score, event_level, level_code, handle
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from score_board
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from score_board
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ita.rank.pojo.ScoreBoardPojo" >
+    insert into score_board (id, event_id, event_name, 
+      round, week, season, 
+      player_1_id, player_1_name, player_1_score, 
+      player_2_id, player_2_name, player_2_score, 
+      event_level, level_code, handle
+      )
+    values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, 
+      #{round,jdbcType=VARCHAR}, #{week,jdbcType=INTEGER}, #{season,jdbcType=INTEGER}, 
+      #{player1Id,jdbcType=INTEGER}, #{player1Name,jdbcType=VARCHAR}, #{player1Score,jdbcType=INTEGER}, 
+      #{player2Id,jdbcType=INTEGER}, #{player2Name,jdbcType=VARCHAR}, #{player2Score,jdbcType=INTEGER}, 
+      #{eventLevel,jdbcType=VARCHAR}, #{levelCode,jdbcType=VARCHAR}, #{handle,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.ita.rank.pojo.ScoreBoardPojo" >
+    insert into score_board
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="eventId != null" >
+        event_id,
+      </if>
+      <if test="eventName != null" >
+        event_name,
+      </if>
+      <if test="round != null" >
+        round,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="season != null" >
+        season,
+      </if>
+      <if test="player1Id != null" >
+        player_1_id,
+      </if>
+      <if test="player1Name != null" >
+        player_1_name,
+      </if>
+      <if test="player1Score != null" >
+        player_1_score,
+      </if>
+      <if test="player2Id != null" >
+        player_2_id,
+      </if>
+      <if test="player2Name != null" >
+        player_2_name,
+      </if>
+      <if test="player2Score != null" >
+        player_2_score,
+      </if>
+      <if test="eventLevel != null" >
+        event_level,
+      </if>
+      <if test="levelCode != null" >
+        level_code,
+      </if>
+      <if test="handle != null" >
+        handle,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eventId != null" >
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null" >
+        #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null" >
+        #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        #{season,jdbcType=INTEGER},
+      </if>
+      <if test="player1Id != null" >
+        #{player1Id,jdbcType=INTEGER},
+      </if>
+      <if test="player1Name != null" >
+        #{player1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="player1Score != null" >
+        #{player1Score,jdbcType=INTEGER},
+      </if>
+      <if test="player2Id != null" >
+        #{player2Id,jdbcType=INTEGER},
+      </if>
+      <if test="player2Name != null" >
+        #{player2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="player2Score != null" >
+        #{player2Score,jdbcType=INTEGER},
+      </if>
+      <if test="eventLevel != null" >
+        #{eventLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="handle != null" >
+        #{handle,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ita.rank.pojo.ScoreBoardPojo" >
+    update score_board
+    <set >
+      <if test="eventId != null" >
+        event_id = #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null" >
+        event_name = #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="round != null" >
+        round = #{round,jdbcType=VARCHAR},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        season = #{season,jdbcType=INTEGER},
+      </if>
+      <if test="player1Id != null" >
+        player_1_id = #{player1Id,jdbcType=INTEGER},
+      </if>
+      <if test="player1Name != null" >
+        player_1_name = #{player1Name,jdbcType=VARCHAR},
+      </if>
+      <if test="player1Score != null" >
+        player_1_score = #{player1Score,jdbcType=INTEGER},
+      </if>
+      <if test="player2Id != null" >
+        player_2_id = #{player2Id,jdbcType=INTEGER},
+      </if>
+      <if test="player2Name != null" >
+        player_2_name = #{player2Name,jdbcType=VARCHAR},
+      </if>
+      <if test="player2Score != null" >
+        player_2_score = #{player2Score,jdbcType=INTEGER},
+      </if>
+      <if test="eventLevel != null" >
+        event_level = #{eventLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        level_code = #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="handle != null" >
+        handle = #{handle,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ita.rank.pojo.ScoreBoardPojo" >
+    update score_board
+    set event_id = #{eventId,jdbcType=INTEGER},
+      event_name = #{eventName,jdbcType=VARCHAR},
+      round = #{round,jdbcType=VARCHAR},
+      week = #{week,jdbcType=INTEGER},
+      season = #{season,jdbcType=INTEGER},
+      player_1_id = #{player1Id,jdbcType=INTEGER},
+      player_1_name = #{player1Name,jdbcType=VARCHAR},
+      player_1_score = #{player1Score,jdbcType=INTEGER},
+      player_2_id = #{player2Id,jdbcType=INTEGER},
+      player_2_name = #{player2Name,jdbcType=VARCHAR},
+      player_2_score = #{player2Score,jdbcType=INTEGER},
+      event_level = #{eventLevel,jdbcType=VARCHAR},
+      level_code = #{levelCode,jdbcType=VARCHAR},
+      handle = #{handle,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

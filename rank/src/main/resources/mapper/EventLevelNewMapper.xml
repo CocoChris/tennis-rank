@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ita.rank.dao.EventLevelMapper" >
+  <resultMap id="BaseResultMap" type="com.ita.rank.pojo.EventLevelPojo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="level" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="Q1" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Q2" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="QFi" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="Q" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="R64" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="R32" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="R16" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="QF" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="SF" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="F" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="W" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, level, code, Q1, Q2, QFi, Q, R64, R32, R16, QF, SF, F, W
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from event_level_new
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from event_level_new
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ita.rank.pojo.EventLevelPojo" >
+    insert into event_level_new (id, level, code, 
+      Q1, Q2, QFi, Q, 
+      R64, R32, R16, QF, 
+      SF, F, W)
+    values (#{id,jdbcType=INTEGER}, #{level,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR}, 
+      #{q1,jdbcType=INTEGER}, #{q2,jdbcType=INTEGER}, #{qfi,jdbcType=INTEGER}, #{q,jdbcType=INTEGER}, 
+      #{r64,jdbcType=INTEGER}, #{r32,jdbcType=INTEGER}, #{r16,jdbcType=INTEGER}, #{qf,jdbcType=INTEGER}, 
+      #{sf,jdbcType=INTEGER}, #{f,jdbcType=INTEGER}, #{w,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ita.rank.pojo.EventLevelPojo" >
+    insert into event_level_new
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="level != null" >
+        level,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="q1 != null" >
+        Q1,
+      </if>
+      <if test="q2 != null" >
+        Q2,
+      </if>
+      <if test="qfi != null" >
+        QFi,
+      </if>
+      <if test="q != null" >
+        Q,
+      </if>
+      <if test="r64 != null" >
+        R64,
+      </if>
+      <if test="r32 != null" >
+        R32,
+      </if>
+      <if test="r16 != null" >
+        R16,
+      </if>
+      <if test="qf != null" >
+        QF,
+      </if>
+      <if test="sf != null" >
+        SF,
+      </if>
+      <if test="f != null" >
+        F,
+      </if>
+      <if test="w != null" >
+        W,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="level != null" >
+        #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="q1 != null" >
+        #{q1,jdbcType=INTEGER},
+      </if>
+      <if test="q2 != null" >
+        #{q2,jdbcType=INTEGER},
+      </if>
+      <if test="qfi != null" >
+        #{qfi,jdbcType=INTEGER},
+      </if>
+      <if test="q != null" >
+        #{q,jdbcType=INTEGER},
+      </if>
+      <if test="r64 != null" >
+        #{r64,jdbcType=INTEGER},
+      </if>
+      <if test="r32 != null" >
+        #{r32,jdbcType=INTEGER},
+      </if>
+      <if test="r16 != null" >
+        #{r16,jdbcType=INTEGER},
+      </if>
+      <if test="qf != null" >
+        #{qf,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        #{sf,jdbcType=INTEGER},
+      </if>
+      <if test="f != null" >
+        #{f,jdbcType=INTEGER},
+      </if>
+      <if test="w != null" >
+        #{w,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ita.rank.pojo.EventLevelPojo" >
+    update event_level_new
+    <set >
+      <if test="level != null" >
+        level = #{level,jdbcType=VARCHAR},
+      </if>
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="q1 != null" >
+        Q1 = #{q1,jdbcType=INTEGER},
+      </if>
+      <if test="q2 != null" >
+        Q2 = #{q2,jdbcType=INTEGER},
+      </if>
+      <if test="qfi != null" >
+        QFi = #{qfi,jdbcType=INTEGER},
+      </if>
+      <if test="q != null" >
+        Q = #{q,jdbcType=INTEGER},
+      </if>
+      <if test="r64 != null" >
+        R64 = #{r64,jdbcType=INTEGER},
+      </if>
+      <if test="r32 != null" >
+        R32 = #{r32,jdbcType=INTEGER},
+      </if>
+      <if test="r16 != null" >
+        R16 = #{r16,jdbcType=INTEGER},
+      </if>
+      <if test="qf != null" >
+        QF = #{qf,jdbcType=INTEGER},
+      </if>
+      <if test="sf != null" >
+        SF = #{sf,jdbcType=INTEGER},
+      </if>
+      <if test="f != null" >
+        F = #{f,jdbcType=INTEGER},
+      </if>
+      <if test="w != null" >
+        W = #{w,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ita.rank.pojo.EventLevelPojo" >
+    update event_level_new
+    set level = #{level,jdbcType=VARCHAR},
+      code = #{code,jdbcType=VARCHAR},
+      Q1 = #{q1,jdbcType=INTEGER},
+      Q2 = #{q2,jdbcType=INTEGER},
+      QFi = #{qfi,jdbcType=INTEGER},
+      Q = #{q,jdbcType=INTEGER},
+      R64 = #{r64,jdbcType=INTEGER},
+      R32 = #{r32,jdbcType=INTEGER},
+      R16 = #{r16,jdbcType=INTEGER},
+      QF = #{qf,jdbcType=INTEGER},
+      SF = #{sf,jdbcType=INTEGER},
+      F = #{f,jdbcType=INTEGER},
+      W = #{w,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

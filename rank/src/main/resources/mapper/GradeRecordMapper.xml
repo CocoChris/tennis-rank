@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ita.rank.dao.GradeRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.ita.rank.pojo.GradeRecordPojo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="player_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="event_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="event_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="event_level" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="grade" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="score" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="week" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="season" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, player_id, player_name, event_id, event_name, level_code, event_level, grade, 
+    score, week, season
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from grade_record
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from grade_record
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ita.rank.pojo.GradeRecordPojo" >
+    insert into grade_record (id, player_id, player_name, 
+      event_id, event_name, level_code, 
+      event_level, grade, score, 
+      week, season)
+    values (#{id,jdbcType=INTEGER}, #{playerId,jdbcType=INTEGER}, #{playerName,jdbcType=VARCHAR}, 
+      #{eventId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, #{levelCode,jdbcType=VARCHAR}, 
+      #{eventLevel,jdbcType=VARCHAR}, #{grade,jdbcType=VARCHAR}, #{score,jdbcType=INTEGER}, 
+      #{week,jdbcType=INTEGER}, #{season,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ita.rank.pojo.GradeRecordPojo" >
+    insert into grade_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="playerId != null" >
+        player_id,
+      </if>
+      <if test="playerName != null" >
+        player_name,
+      </if>
+      <if test="eventId != null" >
+        event_id,
+      </if>
+      <if test="eventName != null" >
+        event_name,
+      </if>
+      <if test="levelCode != null" >
+        level_code,
+      </if>
+      <if test="eventLevel != null" >
+        event_level,
+      </if>
+      <if test="grade != null" >
+        grade,
+      </if>
+      <if test="score != null" >
+        score,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="season != null" >
+        season,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="playerId != null" >
+        #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerName != null" >
+        #{playerName,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null" >
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null" >
+        #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eventLevel != null" >
+        #{eventLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        #{score,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        #{season,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ita.rank.pojo.GradeRecordPojo" >
+    update grade_record
+    <set >
+      <if test="playerId != null" >
+        player_id = #{playerId,jdbcType=INTEGER},
+      </if>
+      <if test="playerName != null" >
+        player_name = #{playerName,jdbcType=VARCHAR},
+      </if>
+      <if test="eventId != null" >
+        event_id = #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null" >
+        event_name = #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        level_code = #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="eventLevel != null" >
+        event_level = #{eventLevel,jdbcType=VARCHAR},
+      </if>
+      <if test="grade != null" >
+        grade = #{grade,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null" >
+        score = #{score,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        season = #{season,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ita.rank.pojo.GradeRecordPojo" >
+    update grade_record
+    set player_id = #{playerId,jdbcType=INTEGER},
+      player_name = #{playerName,jdbcType=VARCHAR},
+      event_id = #{eventId,jdbcType=INTEGER},
+      event_name = #{eventName,jdbcType=VARCHAR},
+      level_code = #{levelCode,jdbcType=VARCHAR},
+      event_level = #{eventLevel,jdbcType=VARCHAR},
+      grade = #{grade,jdbcType=VARCHAR},
+      score = #{score,jdbcType=INTEGER},
+      week = #{week,jdbcType=INTEGER},
+      season = #{season,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ita.rank.dao.EventInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.ita.rank.pojo.EventInfoPojo" >
+    <constructor >
+      <idArg column="id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <idArg column="event_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="event_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="level_code" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="match_mode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="week" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="season" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, event_id, event_name, level_code, match_mode, week, season
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.wca.rank.pojo.EventInfoPojoKey" >
+    select 
+    <include refid="Base_Column_List" />
+    from event_info
+    where id = #{id,jdbcType=INTEGER}
+      and event_id = #{eventId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.wca.rank.pojo.EventInfoPojoKey" >
+    delete from event_info
+    where id = #{id,jdbcType=INTEGER}
+      and event_id = #{eventId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.ita.rank.pojo.EventInfoPojo" >
+    insert into event_info (id, event_id, event_name, 
+      level_code, match_mode, week, 
+      season)
+    values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, 
+      #{levelCode,jdbcType=VARCHAR}, #{matchMode,jdbcType=INTEGER}, #{week,jdbcType=INTEGER}, 
+      #{season,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ita.rank.pojo.EventInfoPojo" >
+    insert into event_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="eventId != null" >
+        event_id,
+      </if>
+      <if test="eventName != null" >
+        event_name,
+      </if>
+      <if test="levelCode != null" >
+        level_code,
+      </if>
+      <if test="matchMode != null" >
+        match_mode,
+      </if>
+      <if test="week != null" >
+        week,
+      </if>
+      <if test="season != null" >
+        season,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="eventId != null" >
+        #{eventId,jdbcType=INTEGER},
+      </if>
+      <if test="eventName != null" >
+        #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="matchMode != null" >
+        #{matchMode,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        #{season,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ita.rank.pojo.EventInfoPojo" >
+    update event_info
+    <set >
+      <if test="eventName != null" >
+        event_name = #{eventName,jdbcType=VARCHAR},
+      </if>
+      <if test="levelCode != null" >
+        level_code = #{levelCode,jdbcType=VARCHAR},
+      </if>
+      <if test="matchMode != null" >
+        match_mode = #{matchMode,jdbcType=INTEGER},
+      </if>
+      <if test="week != null" >
+        week = #{week,jdbcType=INTEGER},
+      </if>
+      <if test="season != null" >
+        season = #{season,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+      and event_id = #{eventId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ita.rank.pojo.EventInfoPojo" >
+    update event_info
+    set event_name = #{eventName,jdbcType=VARCHAR},
+      level_code = #{levelCode,jdbcType=VARCHAR},
+      match_mode = #{matchMode,jdbcType=INTEGER},
+      week = #{week,jdbcType=INTEGER},
+      season = #{season,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+      and event_id = #{eventId,jdbcType=INTEGER}
+  </update>
+</mapper>
