@@ -11,7 +11,7 @@
 docker build ./ -t tennis_web
 
 # run docker
-docker run -p 8080:80 8888:8888 tennis_web
+docker run -p 8080:80 tennis_web
 ```
 
 ### Local

@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://www.wca.today/',
+        target: 'http://localhost/',
+        // target: 'http://www.wca.today/',
         changeOrigin: true,
         pathRewrite: {
           '^/api': '/api'
