@@ -7,8 +7,8 @@ server {
 
   index index.html index.htm index.nginx-debian.html;
 
-  server_name  localhost;
-  # server_name  www.wca.today;
+  # server_name  localhost;
+  server_name  www.ita.today;
   location  /api {
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
