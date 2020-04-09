@@ -15,7 +15,7 @@ services:
     restart: always
     volumes:
       - ./db:/code
-      - /data/wca/mysql:/var/lib/mysql
+      - /data/ita/mysql:/var/lib/mysql
     ports:
       - "3328:3306"
     env_file:
@@ -29,6 +29,6 @@ services:
     volumes:
       - ./rank/target/rank-0.0.1-SNAPSHOT.war:/usr/local/tomcat/webapps/rank.war
       - ./rank/server.xml:/usr/local/tomcat/conf/server.xml
-      - /data/wca/tomcat:/usr/local/tomcat/logs
+      - /data/ita/tomcat:/usr/local/tomcat/logs
     ports:
       - "8888:8080"
