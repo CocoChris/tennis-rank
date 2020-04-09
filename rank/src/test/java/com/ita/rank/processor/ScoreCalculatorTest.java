@@ -272,7 +272,7 @@ public class ScoreCalculatorTest {
         for (GradeRecordPojo championPojo : championPojos) {
             int championId = championPojo.getPlayerId();
             List<ScoreBoardPojo> scoreBoardPojoList =
-                    scoreBoardService.selectByPlayerIdAndEventIdWithoutRet(championId, championPojo.getEventId());
+                    scoreBoardService.selectByPlayerIdAndEventIdWithoutWO(championId, championPojo.getEventId());
             List<Integer> rivalRanks = new ArrayList<>();
             for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList) {
                 if (scoreBoardPojo.getPlayer1Id() == championId) {

@@ -66,7 +66,7 @@ public class PlayerInfoServiceTest {
 
     @Test
     public void testSelectByPlayerId() {
-        System.out.println(playerInfoService.selectByPlayerId(1001).getPlayerName().equals(scoreBoardService.selectAsPlayer1WithoutRet(1001).get(0).getPlayer1Name()));
+        System.out.println(playerInfoService.selectByPlayerId(1001).getPlayerName().equals(scoreBoardService.selectAsPlayer1WithoutWO(1001).get(0).getPlayer1Name()));
     }
 
     @Test
