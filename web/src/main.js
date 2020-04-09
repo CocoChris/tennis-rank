@@ -30,4 +30,5 @@ new Vue({
   template: '<App/>'
 })
 
-Vue.http.options.root = 'http://www.wca.today/'
+// Vue.http.options.root = 'http://www.wca.today/'
+Vue.http.options.root = 'http://localhost/'
