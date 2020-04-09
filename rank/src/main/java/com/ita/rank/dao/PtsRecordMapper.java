@@ -24,7 +24,7 @@ public interface PtsRecordMapper {
                                  @Param("week") int week,
                                  @Param("season") int season);
 
-    @Select("select min(rank) from " + TABLE_NAME + " where player_id = #{playerId} and (week < #{week} or season < #{season}) and rank > 0")
+    @Select("select min(rank) from " + TABLE_NAME + " where player_id = #{playerId} and (week < #{week} or season < #{season}) and season > 1 and rank > 0")
     Integer selectHighestRank(@Param("playerId") int playerId,
                               @Param("week") int week,
                               @Param("season") int season);

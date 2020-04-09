@@ -37,7 +37,7 @@ public class ScoreBoardService {
     private final int unhandled = 0;
     private final int handled = 1;
 
-    private final int unret = 0;
+    private final int unWO = 0;
 
     private final Logger logger = LoggerFactory.getLogger(ScoreBoardService.class);
 
@@ -116,7 +116,7 @@ public class ScoreBoardService {
                 return 0;
             }
 
-            if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getRet() == 0) {
+            if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getWo() == 0) {
                 logger.error("the scores can not be equal " + scoreBoardPojo.toString());
                 return 0;
             }
@@ -256,30 +256,30 @@ public class ScoreBoardService {
         return scoreBoardMapper.selectByPlayerIdAndPhase(playerId, week, season);
     }
 
-    public List<ScoreBoardPojo> selectByPlayerIdWithoutRet(int playerId) {
+    public List<ScoreBoardPojo> selectByPlayerIdWithoutWO(int playerId) {
 
-        return scoreBoardMapper.selectByPlayerIdWithoutRet(playerId, unret);
+        return scoreBoardMapper.selectByPlayerIdWithoutWO(playerId, unWO);
     }
 
-    public List<ScoreBoardPojo> selectByPlayerIdAndPhaseWithoutRet(int playerId, int week, int season) {
+    public List<ScoreBoardPojo> selectByPlayerIdAndPhaseWithoutWO(int playerId, int week, int season) {
 
-        return scoreBoardMapper.selectByPlayerIdAndPhaseWithoutRet(playerId, week, season, unret);
+        return scoreBoardMapper.selectByPlayerIdAndPhaseWithoutWO(playerId, week, season, unWO);
     }
 
-    public List<ScoreBoardPojo> selectAsPlayer1WithoutRet(int playerId) {
-        return scoreBoardMapper.selectAsPlayer1WithoutRet(playerId, unret);
+    public List<ScoreBoardPojo> selectAsPlayer1WithoutWO(int playerId) {
+        return scoreBoardMapper.selectAsPlayer1WithoutWO(playerId, unWO);
     }
 
-    public List<ScoreBoardPojo> selectAsPlayer2WithoutRet(int playerId) {
-        return scoreBoardMapper.selectAsPlayer2WithoutRet(playerId, unret);
+    public List<ScoreBoardPojo> selectAsPlayer2WithoutWO(int playerId) {
+        return scoreBoardMapper.selectAsPlayer2WithoutWO(playerId, unWO);
     }
 
-    public List<ScoreBoardPojo> selectAsPlayer1BySeasonWithoutRet(int playerId, int season) {
-        return scoreBoardMapper.selectAsPlayer1BySeasonWithoutRet(playerId, season, unret);
+    public List<ScoreBoardPojo> selectAsPlayer1BySeasonWithoutWO(int playerId, int season) {
+        return scoreBoardMapper.selectAsPlayer1BySeasonWithoutWO(playerId, season, unWO);
     }
 
-    public List<ScoreBoardPojo> selectAsPlayer2BySeasonWithoutRet(int playerId, int season) {
-        return scoreBoardMapper.selectAsPlayer2BySeasonWithoutRet(playerId, season, unret);
+    public List<ScoreBoardPojo> selectAsPlayer2BySeasonWithoutWO(int playerId, int season) {
+        return scoreBoardMapper.selectAsPlayer2BySeasonWithoutWO(playerId, season, unWO);
     }
 
     public List<ScoreBoardPojo> selectOfRivals(int player1Id, int player2Id) {
@@ -290,16 +290,16 @@ public class ScoreBoardService {
         return scoreBoardMapper.selectVsTopNOfCareer(playerId, topN);
     }
 
-    public List<ScoreBoardPojo> selectVsTopNOfCareerWithoutRet(int playerId, int topN) {
-        return scoreBoardMapper.selectVsTopNOfCareerWithoutRet(playerId, topN, unret);
+    public List<ScoreBoardPojo> selectVsTopNOfCareerWithoutWO(int playerId, int topN) {
+        return scoreBoardMapper.selectVsTopNOfCareerWithoutWO(playerId, topN, unWO);
     }
 
     public List<ScoreBoardPojo> selectByPlayerIdAndEventId(int playerId, int eventId) {
         return scoreBoardMapper.selectByPlayerIdAndEventId(playerId, eventId);
     }
 
-    public List<ScoreBoardPojo> selectByPlayerIdAndEventIdWithoutRet(int playerId, int eventId) {
-        return scoreBoardMapper.selectByPlayerIdAndEventIdWithoutRet(playerId, eventId, unret);
+    public List<ScoreBoardPojo> selectByPlayerIdAndEventIdWithoutWO(int playerId, int eventId) {
+        return scoreBoardMapper.selectByPlayerIdAndEventIdWithoutWO(playerId, eventId, unWO);
     }
 
     public List<ScoreBoardPojo> selectAllScoreRecord() {

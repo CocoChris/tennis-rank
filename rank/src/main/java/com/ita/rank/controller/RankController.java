@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -32,7 +33,7 @@ public class RankController {
 
     private final Logger logger = LoggerFactory.getLogger(RankController.class);
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
 
         logger.info("start initializing rankInfo");
