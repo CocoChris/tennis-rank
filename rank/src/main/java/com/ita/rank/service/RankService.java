@@ -115,7 +115,7 @@ public class RankService {
             rankInfo.setCurrGrade(currGrade);
             rankInfo.setStateOfCurrWeek(stateOfCurrWeek);
             rankInfo.setNumOfEntriesOfWholePeriod(numOfEntriesOfWholePeriod);
-            rankInfo.setNumOfTitlesOfCareer(numOfTitlesOfCareer);
+//            rankInfo.setNumOfTitlesOfCareer(numOfTitlesOfCareer);
             rankInfo.setWinsOfCurrSeason(winsOfCurrSeason);
             rankInfo.setLossesOfCurrSeason(lossesOfCurrSeason);
             rankInfo.setWinRateOfCurrSeason(winRateOfCurrSeason);

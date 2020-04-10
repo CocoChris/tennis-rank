@@ -5,6 +5,7 @@ import com.ita.rank.service.RankService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -60,7 +61,7 @@ public class RankController {
         return championRankInfoJson;
     }
 
-//    @Scheduled(cron = "0 5 * * * ?")
+    @Scheduled(cron = "0 5 * * * ?")
     public void updateRankInfo() {
 
         long startTime = System.currentTimeMillis();

@@ -5,9 +5,12 @@ import com.ita.rank.service.HomePageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.annotation.PostConstruct;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
@@ -27,7 +30,7 @@ public class HomePageController {
 
     private final Logger logger = LoggerFactory.getLogger(HomePageController.class);
 
-//    @PostConstruct
+    @PostConstruct
     public void init() {
   
         logger.info("start initializing hotSearchList");
@@ -41,8 +44,8 @@ public class HomePageController {
         return hotSearchJson;
     }
 
-//    @Scheduled(cron = "0 0 0 * * ?")
-    public void updateRankInfo() {
+    @Scheduled(cron = "0 0 0 * * ?")
+    public void updateHotSearch() {
       
         logger.info("start updating hotSearchList");
         hotSearchJson = homePageService.queryHotSearchList();
