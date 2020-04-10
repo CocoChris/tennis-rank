@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: dev
 #  datasource:
 #    driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/ita?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
@@ -26,9 +26,9 @@ mybatis:
 spring:
   profiles: dev
   datasource:
-      url: jdbc:mysql://www.ita.today:3328/ita?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
+      url: jdbc:mysql://157.245.210.150:3328/ita?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
       username: root
-      password: yOcTwGp1s3Kc
+      password: Nzk3YjIxZTFmMzQ1YzQxYTg2MzNhM2Q1MWU3MzZkODU=
       driver-class-name: com.mysql.jdbc.Driver
 
 ---
