@@ -19,7 +19,7 @@ services:
     ports:
       - "3328:3306"
     env_file:
-      - /var/local/ita
+      - /var/local/ita/.env
 
   rank:
     image: tomcat:8.5
