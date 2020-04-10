@@ -1,11 +1,9 @@
 <template>
   <div :style="headerStyleObject">
-    <img
-      id="CurlingLogo"
-      :src="logoUrl"
-      :style="logoStyle"
-    >
-    <span :style="mainTitleStyle">World Curling Association</span>
+    <img id="CurlingLogo"
+         :src="logoUrl"
+         :style="logoStyle">
+    <span :style="mainTitleStyle">Intercollegiate Tennis Association</span>
   </div>
 </template>
 
