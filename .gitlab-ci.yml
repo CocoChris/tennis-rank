@@ -24,4 +24,4 @@ deploy:
     - cp .env.bak .env
     - docker-compose build
     - docker-compose stop
-    - nohup docker-compose up >> /var/log/web/wca.log 2>&1 &
+    - nohup docker-compose up >> /var/log/web/ita.log 2>&1 &

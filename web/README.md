@@ -1,6 +1,6 @@
-# wca-rank-web
+# ita-rank-web
 
-> The web of WCA rank website
+> The web of ITA rank website
 
 ## Build Setup
 

@@ -1,8 +1,8 @@
 {
-  "name": "wca-rank-web",
+  "name": "ita-rank-web",
   "version": "1.0.0",
   "private": true,
-  "description": "The web of WCA rank website",
+  "description": "The web of ITA rank website",
   "author": "Mr. Leng",
   "scripts": {
     "build": "node build/build.js",

@@ -4,7 +4,7 @@ RUN apt-get -qq update \
 
 WORKDIR /code
 COPY ./ /code/
-COPY ./config/wca.nginx /etc/nginx/sites-enabled/default
+COPY ./config/ita.nginx /etc/nginx/sites-enabled/default
 EXPOSE 80
 
 RUN  npm install \
