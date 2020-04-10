@@ -1,5 +1,5 @@
 #!/bin/bash
-mysql -uroot -p$MYSQL_ROOT_PASSWORD <<EOF
+cd /code && mysql -uroot -p$MYSQL_ROOT_PASSWORD <<EOF
 USE ita;
 source current_phase.sql;
 source event_info.sql;
