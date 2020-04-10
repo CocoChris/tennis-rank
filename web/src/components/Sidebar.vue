@@ -17,10 +17,10 @@
         <span slot="title">即时排名</span>
       </el-menu-item>
 
-      <el-menu-item index="/championrank">
+      <!-- <el-menu-item index="/championrank">
         <i class="el-icon-sort"></i>
         <span slot="title">冠军排名</span>
-      </el-menu-item>
+      </el-menu-item> -->
 
       <el-submenu index="">
         <template slot="title">

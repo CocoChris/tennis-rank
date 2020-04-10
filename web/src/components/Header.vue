@@ -1,9 +1,11 @@
 <template>
   <div :style="headerStyleObject">
-    <img id="CurlingLogo"
-         :src="logoUrl"
-         :style="logoStyle">
-    <span :style="mainTitleStyle">Intercollegiate Tennis Association</span>
+    <img
+      id="CurlingLogo"
+      :src="logoUrl"
+      :style="logoStyle"
+    >
+    <span :style="mainTitleStyle"> I T A</span>
   </div>
 </template>
 
@@ -19,7 +21,7 @@ export default {
         'font-size': 'xx-large',
         height: '100%'
       },
-      logoUrl: require('./../assets/curling.svg'),
+      logoUrl: require('./../assets/logo_cutted.svg'),
       logoStyle: {
         display: 'inline-box',
         height: '100%',

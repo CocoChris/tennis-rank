@@ -1,6 +1,6 @@
 <template>
   <div id="index-main">
-    <el-card class="hot-serach-card"
+    <!-- <el-card class="hot-serach-card"
              shadow="hover"
              :body-style="{ padding: '0px' }">
       <div slot="header">
@@ -32,7 +32,7 @@
           </template>
         </el-table-column>
       </el-table>
-    </el-card>
+    </el-card> -->
 
     <el-card class="vistor-map-card"
              shadow="hover">

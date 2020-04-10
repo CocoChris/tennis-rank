@@ -99,13 +99,13 @@
         align="center"
         label="参赛数"
       ></el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         sortable
         prop="numOfTitlesOfCareer"
         :min-width="smallCol()"
         align="center"
         label="冠军数"
-      ></el-table-column>
+      ></el-table-column> -->
 
       <el-table-column
         align="center"
