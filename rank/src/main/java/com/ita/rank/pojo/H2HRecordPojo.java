@@ -22,7 +22,7 @@ public class H2HRecordPojo {
     
     private String eventLevel;
     
-    private int matchMode;
+    private int eventMode;
     
     private String eventName;
     

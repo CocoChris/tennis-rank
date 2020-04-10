@@ -7,12 +7,11 @@ import java.util.Map;
  * @Author: liuxingxin
  * @Date: 2019/2/22
  */
-public enum MatchMode {
+public enum EventMode {
 
-    NORMAL(0, "普通"),
-    FAST(1, "快速"),
-    SKIN(2, "skin"),
-    WHEELCHAIR(3, "轮椅");
+    SINGLE(0, "单打"),
+    DOUBLE(1, "双打"),
+    TEAM(2, "团体");
 
     private int index;
     private String mode;
@@ -20,7 +19,7 @@ public enum MatchMode {
     private static final Map<Integer, String> indexMap = new HashMap<>();
     private static final Map<String, Integer> modeMap = new HashMap<>();
 
-    MatchMode(int index, String mode) {
+    EventMode(int index, String mode) {
         this.index = index;
         this.mode = mode;
     }
@@ -40,9 +39,9 @@ public enum MatchMode {
     }
 
     static {
-        for (MatchMode matchMode : MatchMode.values()) {
-            indexMap.put(matchMode.getIndex(), matchMode.getMode());
-            modeMap.put(matchMode.getMode(), matchMode.getIndex());
+        for (EventMode eventMode : EventMode.values()) {
+            indexMap.put(eventMode.getIndex(), eventMode.getMode());
+            modeMap.put(eventMode.getMode(), eventMode.getIndex());
         }
     }
 

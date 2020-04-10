@@ -80,6 +80,18 @@
         align="center"
         label="本周赛事"
       ></el-table-column>
+      <!-- <el-table-column
+        prop="eventLevel"
+        :min-width="xLarCol()"
+        align="center"
+        label="赛事级别"
+      ></el-table-column>
+      <el-table-column
+        prop="eventType"
+        :min-width="xLarCol()"
+        align="center"
+        label="赛事类型"
+      ></el-table-column> -->
       <el-table-column
         sortable
         prop="Entries"
@@ -118,7 +130,7 @@
         </el-table-column>
       </el-table-column>
 
-      <el-table-column
+      <!-- <el-table-column
         align="center"
         label="总战绩"
       >
@@ -139,7 +151,7 @@
             <span>{{scope.row.winRateOfCareer}}%</span>
           </template>
         </el-table-column>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column
         align="center"
