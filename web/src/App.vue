@@ -52,7 +52,7 @@ export default {
       mainAppStyle: {
         'min-height': '100%',
         'background': '#fff',
-        'background-image': 'url(' + require('./assets/background.gif') + ')',
+        'background-image': 'url(' + require('./assets/tennis_background_2.gif') + ')',
         'background-repeat': 'no-repeat',
         'background-position': 'bottom',
         'background-size': '60%'
