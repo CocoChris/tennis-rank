@@ -1,6 +1,7 @@
 package com.ita.rank.dao;
 
 import com.ita.rank.pojo.EventInfoPojo;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -30,4 +31,11 @@ public interface EventInfoMapper {
     @Select("select event_id from " + TABLE_NAME + " where event_level = #{eventLevel} and season = #{season}")
     List<Integer> selectEventIdOfSpecificEventLevelOfCurrSeason(@Param("eventLevel") String eventLevel,
                                                                 @Param("season") int season);
+
+    @Insert("insert into " + TABLE_NAME + " (event_id, event_name, level_code, event_type, event_mode, week, season, date) " +
+        "values (#{eventInfoPojo.eventId, jdbcType=INTEGER}, #{eventInfoPojo.eventName, jdbcType=VARCHAR}, " +
+        "#{eventInfoPojo.levelCode, jdbcType=VARCHAR}, #{eventInfoPojo.eventType, jdbcType=INTEGER}, " +
+        "#{eventInfoPojo.eventMode, jdbcType=INTEGER}, #{eventInfoPojo.week, jdbcType=INTEGER}, " +
+        "#{eventInfoPojo.season, jdbcType=INTEGER}, #{eventInfoPojo.date, jdbcType=VARCHAR})")
+    int insert(@Param("eventInfoPojo") EventInfoPojo eventInfoPojo);
 }

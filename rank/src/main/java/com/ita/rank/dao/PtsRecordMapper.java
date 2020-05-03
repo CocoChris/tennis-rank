@@ -29,6 +29,13 @@ public interface PtsRecordMapper {
                               @Param("week") int week,
                               @Param("season") int season);
 
+    @Select("select * from " + TABLE_NAME + " where player_id = #{playerId} order by season asc, week asc")
+    List<PtsRecordPojo> selectByPlayerId(@Param("playerId") int playerId);
+
+    @Select("select * from " + TABLE_NAME + " where player_id = #{playerId} and season = #{season} order by season asc, week asc")
+    List<PtsRecordPojo> selectByPlayerIdAndSeason(@Param("playerId") int playerId,
+                                                  @Param("season") int season);
+
     @Update("update " + TABLE_NAME +
             " set total_pts = #{ptsRecordPojo.totalPts} " +
             "where id = #{ptsRecordPojo.id}")

@@ -24,7 +24,7 @@ public class PtsRecordService {
 
     private static final int RANK_NONE = 999;
 
-    public PtsRecordPojo selectByPlayerId(int playerId, int week, int season) {
+    public PtsRecordPojo selectByPlayerIdAndPhase(int playerId, int week, int season) {
         return ptsRecordMapper.selectByPlayerIdAndPhase(playerId, week, season);
     }
 
@@ -56,6 +56,14 @@ public class PtsRecordService {
         } else {
             return highestRank;
         }
+    }
+
+    public List<PtsRecordPojo> selectByPlayerId(int playerId) {
+        return ptsRecordMapper.selectByPlayerId(playerId);
+    }
+
+    public List<PtsRecordPojo> selectByPlayerIdAndSeason(int playerId, int season) {
+        return ptsRecordMapper.selectByPlayerIdAndSeason(playerId, season);
     }
 
     public void updateTotalPts(PtsRecordPojo ptsRecordPojo) {

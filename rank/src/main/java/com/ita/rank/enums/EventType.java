@@ -1,5 +1,7 @@
 package com.ita.rank.enums;
 
+import org.springframework.stereotype.Component;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -7,7 +9,7 @@ import java.util.Map;
  * @Author: liuxingxin
  * @Date: 2019/2/22
  */
-public enum EventMode {
+public enum EventType {
 
     SINGLE(0, "单打"),
     DOUBLE(1, "双打"),
@@ -19,7 +21,7 @@ public enum EventMode {
     private static final Map<Integer, String> indexMap = new HashMap<>();
     private static final Map<String, Integer> modeMap = new HashMap<>();
 
-    EventMode(int index, String mode) {
+    EventType(int index, String mode) {
         this.index = index;
         this.mode = mode;
     }
@@ -39,9 +41,9 @@ public enum EventMode {
     }
 
     static {
-        for (EventMode eventMode : EventMode.values()) {
-            indexMap.put(eventMode.getIndex(), eventMode.getMode());
-            modeMap.put(eventMode.getMode(), eventMode.getIndex());
+        for (EventType eventType : EventType.values()) {
+            indexMap.put(eventType.getIndex(), eventType.getMode());
+            modeMap.put(eventType.getMode(), eventType.getIndex());
         }
     }
 

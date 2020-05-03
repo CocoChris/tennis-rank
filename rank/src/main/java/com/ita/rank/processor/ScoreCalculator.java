@@ -1,7 +1,7 @@
 package com.ita.rank.processor;
 
+import com.ita.rank.common.constants.EventLevelConstants;
 import com.ita.rank.common.constants.NumConstants;
-import com.ita.rank.common.constants.eventLevelConstants;
 import com.ita.rank.common.utils.CommonUtil;
 import com.ita.rank.enums.EventRound;
 import com.ita.rank.pojo.*;
@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -27,6 +26,9 @@ public class ScoreCalculator {
 
     @Autowired
     ScoreBoardService scoreBoardService;
+
+    @Autowired
+    ScoreBoardDoubleService scoreBoardDoubleService;
 
     @Autowired
     GradeRecordService gradeRecordService;
@@ -51,6 +53,7 @@ public class ScoreCalculator {
      */
     public void gradeRecordUpdater() {
 
+        // 单打比分
         List<ScoreBoardPojo> unhandledScoreBoardPojoList = scoreBoardService.selectUnhandled();
         for (ScoreBoardPojo scoreBoardPojoUnhandled : unhandledScoreBoardPojoList) {
             int week = scoreBoardPojoUnhandled.getWeek();
@@ -75,6 +78,32 @@ public class ScoreCalculator {
                 logger.error("fail to update grade record from score board, the score board id = {}", scoreBoardPojoUnhandled.getId());
             }
         }
+
+        // 双打比分
+        List<ScoreBoardDoublePojo> unhandledScoreBoardDoublePojoList = scoreBoardDoubleService.selectUnhandled();
+        for (ScoreBoardDoublePojo scoreBoardDoublePojoUnhandled : unhandledScoreBoardDoublePojoList) {
+            int week = scoreBoardDoublePojoUnhandled.getWeek();
+            int season = scoreBoardDoublePojoUnhandled.getSeason();
+            if (season > currentPhaseService.selectCurrentPhase().getCurrentSeason()) {
+                currentPhaseService.updateWeek(week);
+                currentPhaseService.updateSeason(season);
+
+                ptsRecordInitializer(week, season);
+//                championPtsRecordInitializer(week, season);
+            } else if (season == currentPhaseService.selectCurrentPhase().getCurrentSeason() && week > currentPhaseService.selectCurrentPhase().getCurrentWeek()) {
+                currentPhaseService.updateWeek(week);
+
+                ptsRecordInitializer(week, season);
+//                championPtsRecordInitializer(week, season);
+            }
+            try {
+                updateGradeRecordFromScoreBoardDouble(scoreBoardDoublePojoUnhandled);
+                updatePtsRecordFromScoreBoardDouble(scoreBoardDoublePojoUnhandled);
+                scoreBoardDoubleService.updateHandle(scoreBoardDoublePojoUnhandled);
+            } catch (Exception e) {
+                logger.error("fail to update grade record from score board double, the score board id = {}", scoreBoardDoublePojoUnhandled.getId());
+            }
+        }
     }
 
     /**
@@ -86,12 +115,12 @@ public class ScoreCalculator {
 
         int winnerId, loserId;
         String winnerName, loserName;
-        if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
+        if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score() || scoreBoardPojo.getRet() == 2) {
             winnerId = scoreBoardPojo.getPlayer1Id();
             winnerName = scoreBoardPojo.getPlayer1Name();
             loserId = scoreBoardPojo.getPlayer2Id();
             loserName = scoreBoardPojo.getPlayer2Name();
-        } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+        } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score() || scoreBoardPojo.getRet() == 1) {
             winnerId = scoreBoardPojo.getPlayer2Id();
             winnerName = scoreBoardPojo.getPlayer2Name();
             loserId = scoreBoardPojo.getPlayer1Id();
@@ -227,6 +256,161 @@ public class ScoreCalculator {
         }
     }
 
+    public int updateGradeRecordFromScoreBoardDouble(ScoreBoardDoublePojo scoreBoardDoublePojo) {
+
+        int winnerIdA, winnerIdB, loserIdA, loserIdB;
+        String winnerNameA, winnerNameB, loserNameA, loserNameB;
+        if (scoreBoardDoublePojo.getPlayer1Score() > scoreBoardDoublePojo.getPlayer2Score() || scoreBoardDoublePojo.getRet() == 2) {
+            winnerIdA = scoreBoardDoublePojo.getPlayer1IdA();
+            winnerNameA = scoreBoardDoublePojo.getPlayer1NameA();
+            winnerIdB = scoreBoardDoublePojo.getPlayer1IdB();
+            winnerNameB = scoreBoardDoublePojo.getPlayer1NameB();
+            loserIdA = scoreBoardDoublePojo.getPlayer2IdA();
+            loserNameA = scoreBoardDoublePojo.getPlayer2NameA();
+            loserIdB = scoreBoardDoublePojo.getPlayer2IdB();
+            loserNameB = scoreBoardDoublePojo.getPlayer2NameB();
+        } else if (scoreBoardDoublePojo.getPlayer1Score() < scoreBoardDoublePojo.getPlayer2Score() || scoreBoardDoublePojo.getRet() == 1) {
+            winnerIdA = scoreBoardDoublePojo.getPlayer2IdA();
+            winnerNameA = scoreBoardDoublePojo.getPlayer2NameA();
+            winnerIdB = scoreBoardDoublePojo.getPlayer2IdB();
+            winnerNameB = scoreBoardDoublePojo.getPlayer2NameB();
+            loserIdA = scoreBoardDoublePojo.getPlayer1IdA();
+            loserNameA = scoreBoardDoublePojo.getPlayer1NameA();
+            loserIdB = scoreBoardDoublePojo.getPlayer1IdB();
+            loserNameB = scoreBoardDoublePojo.getPlayer1NameB();
+        } else {
+            logger.error("the scores can not be equal " + scoreBoardDoublePojo.toString());
+            return 0;
+        }
+
+        logger.info("winner = " + winnerNameA + "/" + winnerNameB + " loser = " + loserNameA + "/" + loserNameB);
+
+        winnerGradeUpdater(winnerIdA, winnerNameA, scoreBoardDoublePojo);
+        winnerGradeUpdater(winnerIdB, winnerNameB, scoreBoardDoublePojo);
+        loserGradeUpdater(loserIdA, loserNameA, scoreBoardDoublePojo);
+        loserGradeUpdater(loserIdB, loserNameB, scoreBoardDoublePojo);
+
+        return 1;
+    }
+
+    public void winnerGradeUpdater(int winnerId, String winnerName, ScoreBoardDoublePojo scoreBoardDoublePojo) {
+
+        int eventId = scoreBoardDoublePojo.getEventId();
+        String round = scoreBoardDoublePojo.getRound();
+        String levelCode = scoreBoardDoublePojo.getLevelCode();
+        int week = scoreBoardDoublePojo.getWeek();
+        int season = scoreBoardDoublePojo.getSeason();
+
+        String currGrade = eventLevelService.getNextRound(round, levelCode);
+
+        String maxGrade = currGrade;
+        int qualified = 0;
+        GradeRecordPojo gradeRecordPojoOfWinner = gradeRecordService.selectByPlayerId(winnerId, eventId);
+        if (gradeRecordPojoOfWinner != null) {
+            maxGrade = EventRound.max(currGrade, gradeRecordPojoOfWinner.getGrade());
+            qualified = gradeRecordPojoOfWinner.getQualified();
+            if (gradeRecordPojoOfWinner.getGrade().equals(eventLevelService.getInitRound(EventRound.F.getRound(), levelCode)) && EventRound.compare(EventRound.Q.getRound(), currGrade)) {
+                maxGrade = EventRound.Q.getRound();
+            }
+        }
+        if (currGrade.equals(EventRound.Q.getRound())) {
+            qualified = 1;
+        }
+        int pts;
+        if (EventRound.compare(maxGrade, eventLevelService.getNextRound(eventLevelService.getInitRound(EventRound.F.getRound(), levelCode), levelCode))) {
+            Integer scoreOfQ = eventLevelService.getScore(EventRound.Q.getRound(), levelCode, season);
+            if (scoreOfQ == null) {
+                pts = eventLevelService.getScore(maxGrade, levelCode, season);
+            } else {
+                pts = eventLevelService.getScore(maxGrade, levelCode, season) + qualified * scoreOfQ;
+            }
+        } else {
+            pts = eventLevelService.getScore(maxGrade, levelCode, season);
+        }
+
+        logger.info("maxGrade = {}", maxGrade);
+        logger.info("qualified = {}", qualified);
+        logger.info("pts = {}", pts);
+
+        if (gradeRecordPojoOfWinner == null) {
+            gradeRecordPojoOfWinner = new GradeRecordPojo();
+            gradeRecordPojoOfWinner.setPlayerId(winnerId);
+            gradeRecordPojoOfWinner.setPlayerName(winnerName);
+            gradeRecordPojoOfWinner.setEventId(scoreBoardDoublePojo.getEventId());
+            gradeRecordPojoOfWinner.setEventName(scoreBoardDoublePojo.getEventName());
+            gradeRecordPojoOfWinner.setLevelCode(levelCode);
+            gradeRecordPojoOfWinner.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+            gradeRecordPojoOfWinner.setGrade(maxGrade);
+            gradeRecordPojoOfWinner.setQualified(qualified);
+            gradeRecordPojoOfWinner.setPts(pts);
+            gradeRecordPojoOfWinner.setWeek(week);
+            gradeRecordPojoOfWinner.setSeason(season);
+
+            System.out.println(gradeRecordPojoOfWinner);
+            gradeRecordService.insert(gradeRecordPojoOfWinner);
+        } else {
+            gradeRecordPojoOfWinner.setGrade(maxGrade);
+            gradeRecordPojoOfWinner.setQualified(qualified);
+            gradeRecordPojoOfWinner.setPts(pts);
+
+            gradeRecordService.updateGrade(gradeRecordPojoOfWinner);
+        }
+    }
+
+    public void loserGradeUpdater(int loserId, String loserName, ScoreBoardDoublePojo scoreBoardDoublePojo) {
+
+        System.out.println(scoreBoardDoublePojo);
+
+        int eventId = scoreBoardDoublePojo.getEventId();
+        String round = scoreBoardDoublePojo.getRound();
+        String levelCode = scoreBoardDoublePojo.getLevelCode();
+        int week = scoreBoardDoublePojo.getWeek();
+        int season = scoreBoardDoublePojo.getSeason();
+
+        System.out.println("loser: " + eventId + ", " + round + ", " + levelCode + ", " + week + ", " + season);
+
+        String grade = eventLevelService.getInitRound(round, levelCode);
+
+        int pts = eventLevelService.getScore(grade, levelCode, season);
+
+        System.out.println("grade = " + grade + "pts = " + pts);
+
+        GradeRecordPojo gradeRecordPojoOfLoser = gradeRecordService.selectByPlayerId(loserId, eventId);
+        if (gradeRecordPojoOfLoser == null) {
+            gradeRecordPojoOfLoser = new GradeRecordPojo();
+            gradeRecordPojoOfLoser.setPlayerId(loserId);
+            gradeRecordPojoOfLoser.setPlayerName(loserName);
+            gradeRecordPojoOfLoser.setEventId(scoreBoardDoublePojo.getEventId());
+            gradeRecordPojoOfLoser.setEventName(scoreBoardDoublePojo.getEventName());
+            gradeRecordPojoOfLoser.setLevelCode(levelCode);
+            gradeRecordPojoOfLoser.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+            gradeRecordPojoOfLoser.setGrade(grade);
+            gradeRecordPojoOfLoser.setPts(pts);
+            gradeRecordPojoOfLoser.setWeek(week);
+            gradeRecordPojoOfLoser.setSeason(season);
+
+            System.out.println(gradeRecordPojoOfLoser);
+            gradeRecordService.insert(gradeRecordPojoOfLoser);
+        } else {
+            if (gradeRecordPojoOfLoser.getGrade().equals(eventLevelService.getInitRound(EventRound.F.getRound(), levelCode))) {
+                String minGrade = eventLevelService.getInitRound(round, levelCode);
+                int minPts = eventLevelService.getScore(minGrade, levelCode, season);
+                gradeRecordPojoOfLoser.setGrade(minGrade);
+                gradeRecordPojoOfLoser.setPts(minPts);
+
+                gradeRecordService.updateGrade(gradeRecordPojoOfLoser);
+            } else if (round.equals(EventRound.QFi.getRound())) {
+                String maxGrade = EventRound.max(round, gradeRecordPojoOfLoser.getGrade());
+                int maxPts = eventLevelService.getScore(maxGrade, levelCode, season);
+
+                gradeRecordPojoOfLoser.setGrade(maxGrade);
+                gradeRecordPojoOfLoser.setPts(maxPts);
+
+                gradeRecordService.updateGrade(gradeRecordPojoOfLoser);
+            }
+        }
+    }
+
     /**
      * 基于score_board表更新或初始化pts_record的记录
      * @param scoreBoardPojo
@@ -240,6 +424,22 @@ public class ScoreCalculator {
 
         ptsCalculator(player1Id, week, season);
         ptsCalculator(player2Id, week, season);
+//        championPtsCalculator(player1Id, week, season);
+//        championPtsCalculator(player2Id, week, season);
+    }
+
+    public void updatePtsRecordFromScoreBoardDouble(ScoreBoardDoublePojo scoreBoardDoublePojo) {
+        int player1IdA = scoreBoardDoublePojo.getPlayer1IdA();
+        int player1IdB = scoreBoardDoublePojo.getPlayer1IdB();
+        int player2IdA = scoreBoardDoublePojo.getPlayer2IdA();
+        int player2IdB = scoreBoardDoublePojo.getPlayer2IdB();
+        int week = scoreBoardDoublePojo.getWeek();
+        int season = scoreBoardDoublePojo.getSeason();
+
+        ptsCalculator(player1IdA, week, season);
+        ptsCalculator(player1IdB, week, season);
+        ptsCalculator(player2IdA, week, season);
+        ptsCalculator(player2IdB, week, season);
 //        championPtsCalculator(player1Id, week, season);
 //        championPtsCalculator(player2Id, week, season);
     }
@@ -260,7 +460,7 @@ public class ScoreCalculator {
 //            total_pts += gradeRecordPojo.getPts();
 //        }
 //
-//        PtsRecordPojo ptsRecordPojo = ptsRecordService.selectByPlayerId(playerId, week, season);
+//        PtsRecordPojo ptsRecordPojo = ptsRecordService.selectByPlayerIdAndPhase(playerId, week, season);
 //        if (ptsRecordPojo == null) {
 //            if (total_pts > 0) {
 //                ptsRecordPojo = new PtsRecordPojo();
@@ -333,9 +533,9 @@ public class ScoreCalculator {
         List<Integer> otherPtsList = new ArrayList<>();
         for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
             String eventLevel = gradeRecordPojo.getEventLevel();
-            if (eventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
+            if (EventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
                 mandatoryPtsList.add(gradeRecordPojo.getPts());
-            } else if (eventLevel.equals(eventLevelConstants.YEC)) {
+            } else if (eventLevel.equals(EventLevelConstants.YEC)) {
                 yecPtsList.add(gradeRecordPojo.getPts());
             } else {
                 otherPtsList.add(gradeRecordPojo.getPts());
@@ -377,7 +577,7 @@ public class ScoreCalculator {
 //            System.out.println(otherPtsList);
 //            System.out.println(total_pts);
 
-        PtsRecordPojo ptsRecordPojo = ptsRecordService.selectByPlayerId(playerId, week, season);
+        PtsRecordPojo ptsRecordPojo = ptsRecordService.selectByPlayerIdAndPhase(playerId, week, season);
         if (ptsRecordPojo == null) {
             if (total_pts > 0) {
                 ptsRecordPojo = new PtsRecordPojo();
@@ -406,11 +606,11 @@ public class ScoreCalculator {
 //        List<Integer> otherPtsList = new ArrayList<>();
 //        for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
 //            String eventLevel = gradeRecordPojo.getEventLevel();
-//            if (eventLevel.equals(eventLevelConstants.GS)) {
+//            if (eventLevel.equals(EventLevelConstants.GS)) {
 //                gsPtsList.add(gradeRecordPojo.getPts());
-//            } else if (eventLevel.equals(eventLevelConstants.PM)) {
+//            } else if (eventLevel.equals(EventLevelConstants.PM)) {
 //                pmPtsList.add(gradeRecordPojo.getPts());
-//            } else if (eventLevel.equals(eventLevelConstants.AF) || eventLevel.equals(eventLevelConstants.ET)) {
+//            } else if (eventLevel.equals(EventLevelConstants.AF) || eventLevel.equals(EventLevelConstants.ET)) {
 //                afOrEtList.add(gradeRecordPojo.getPts());
 //            } else {
 //                otherPtsList.add(gradeRecordPojo.getPts());
@@ -434,7 +634,7 @@ public class ScoreCalculator {
 //                total_pts += CommonUtil.getSum(otherPtsList.subList(0, NumConstants.TOP_PTS_NUM));
 //            }
 //
-//            PtsRecordChampionPojo ptsRecordChampionPojo = ptsRecordChampionService.selectByPlayerId(playerId, week, season);
+//            PtsRecordChampionPojo ptsRecordChampionPojo = ptsRecordChampionService.selectByPlayerIdAndPhase(playerId, week, season);
 //            if (ptsRecordChampionPojo == null) {
 //                if (total_pts > 0) {
 //                    ptsRecordChampionPojo = new PtsRecordChampionPojo();

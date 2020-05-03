@@ -2,8 +2,8 @@ package com.ita.rank.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ita.rank.common.constants.EventLevelConstants;
 import com.ita.rank.common.constants.NumConstants;
-import com.ita.rank.common.constants.eventLevelConstants;
 import com.ita.rank.enums.EventRound;
 import com.ita.rank.pojo.*;
 import com.ita.rank.processor.Classifier;
@@ -43,6 +43,9 @@ public class RankService {
 
     @Autowired
     ScoreBoardService scoreBoardService;
+
+    @Autowired
+    ScoreBoardDoubleService scoreBoardDoubleService;
 
     @Autowired
     EventInfoService eventInfoService;
@@ -87,9 +90,10 @@ public class RankService {
             int numOfEntriesOfWholePeriod = getNumOfEntriesOfWholePeriod(playerId, currWeek, currSeason);
             int numOfTitlesOfCareer = getNumOfTitlesOfCareer(playerId);
 
-            int[] winsAndLossesOfCurrSeason = getWinsAndLossesOfCurrSeason(playerId, currSeason);
-            int winsOfCurrSeason = winsAndLossesOfCurrSeason[0];
-            int lossesOfCurrSeason = winsAndLossesOfCurrSeason[1];
+            int[] singleWinsAndLossesOfCurrSeason = getWinsAndLossesOfCurrSeason(playerId, currSeason, NumConstants.SINGLE_MATCH_MODE);
+            int[] doubleWinsAndLossesOfCurrSeason = getWinsAndLossesOfCurrSeason(playerId, currSeason, NumConstants.DOUBLE_MATCH_MODE);
+            int winsOfCurrSeason = singleWinsAndLossesOfCurrSeason[0] + doubleWinsAndLossesOfCurrSeason[0];
+            int lossesOfCurrSeason = singleWinsAndLossesOfCurrSeason[1] + doubleWinsAndLossesOfCurrSeason[1];
             double winRateOfCurrSeason = Double.valueOf((winsOfCurrSeason + lossesOfCurrSeason == 0) ?
                     df.format(0) : df.format(winsOfCurrSeason * 1.0 / (winsOfCurrSeason + lossesOfCurrSeason)));
 //            int[] winsAndLossesOfCareer = getWinsAndLossesOfCareer(playerId);
@@ -163,17 +167,17 @@ public class RankService {
 //            int plusPts = getPlusPts(playerId, currWeek, currSeason);
 //
 //            Map<String, List<Integer>> ptsMap = getPtsComponentOfCurrSeason(playerId, currWeek, currSeason);
-//            List<Integer> ptsListOfNM = ptsMap.get(eventLevelConstants.NM);
+//            List<Integer> ptsListOfNM = ptsMap.get(EventLevelConstants.NM);
 //            int minValidPts = ptsListOfNM.get(NumConstants.TOP_PTS_NUM - 1);
 //            String currGrade = getCurrGrade(playerId, currWeek, currSeason);
 //            int stateOfCurrWeek = getStatusOfCurrWeek(playerId, currWeek, currSeason);
 //
-//            int ptsOfGS1 = ptsMap.get(eventLevelConstants.GS).get(0);
-//            int ptsOfGS2 = ptsMap.get(eventLevelConstants.GS).get(1);
-//            int ptsOfPM1 = ptsMap.get(eventLevelConstants.PM).get(0);
-//            int ptsOfPM2 = ptsMap.get(eventLevelConstants.PM).get(1);
-//            int ptsOfAF = ptsMap.get(eventLevelConstants.AF).get(0);
-//            int ptsOfET = ptsMap.get(eventLevelConstants.AF).get(1);
+//            int ptsOfGS1 = ptsMap.get(EventLevelConstants.GS).get(0);
+//            int ptsOfGS2 = ptsMap.get(EventLevelConstants.GS).get(1);
+//            int ptsOfPM1 = ptsMap.get(EventLevelConstants.PM).get(0);
+//            int ptsOfPM2 = ptsMap.get(EventLevelConstants.PM).get(1);
+//            int ptsOfAF = ptsMap.get(EventLevelConstants.AF).get(0);
+//            int ptsOfET = ptsMap.get(EventLevelConstants.AF).get(1);
 //            int ptsOfNo1 = ptsListOfNM.get(0);
 //            int ptsOfNo2 = ptsListOfNM.get(1);
 //            int ptsOfNo3 = ptsListOfNM.get(2);
@@ -239,7 +243,7 @@ public class RankService {
             Map<String, List<ClassifiblePojo>> gradeRecordMap = classifier.classifyByEventLevel(pojoList);
             List<Integer> otherList = new ArrayList<>();
             for (String eventLevel : gradeRecordMap.keySet()) {
-                if (!eventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
+                if (!EventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
                     List<ClassifiblePojo> classifiblePojoList = gradeRecordMap.get(eventLevel);
                     for (int i = 0; i < classifiblePojoList.size(); i ++) {
                         GradeRecordPojo gradeRecordPojo = (GradeRecordPojo) classifiblePojoList.get(i);
@@ -274,7 +278,7 @@ public class RankService {
             Map<String, List<ClassifiblePojo>> gradeRecordMap = classifier.classifyByEventLevel(pojoList);
             List<Integer> otherList = new ArrayList<>();
             for (String eventLevel : gradeRecordMap.keySet()) {
-                if (!eventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
+                if (!EventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
                     List<ClassifiblePojo> classifiblePojoList = gradeRecordMap.get(eventLevel);
                     for (int i = 0; i < classifiblePojoList.size(); i ++) {
                         GradeRecordPojo gradeRecordPojo = (GradeRecordPojo) classifiblePojoList.get(i);
@@ -306,90 +310,166 @@ public class RankService {
         return lastGradeRecord.getEventName() + " " + lastGradeRecord.getGrade();
     }
 
-    public int[] getWinsAndLossesOfCurrSeason(int playerId, int season) {
-
+    public int[] getWinsAndLossesOfCurrSeason(int playerId, int season, int singleOrDouble) {
+        // 0-single 1-double
         int[] winsAndLosses = new int[2];
         winsAndLosses[0] = 0;
         winsAndLosses[1] = 0;
 
-        List<ScoreBoardPojo> scoreBoardPojoList1 = scoreBoardService.selectAsPlayer1BySeasonWithoutWO(playerId, season);
-        for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList1) {
-            int ret = scoreBoardPojo.getRet();
-            if (ret == 1) {
-                winsAndLosses[1] += 1;
-            } else if (ret == 2) {
-                winsAndLosses[0] += 1;
-            } else if (ret == 0) {
-                if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
-                    winsAndLosses[0] += 1;
-                } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+        if (singleOrDouble == NumConstants.SINGLE_MATCH_MODE) {
+            List<ScoreBoardPojo> scoreBoardPojoList1 = scoreBoardService.selectAsPlayer1BySeasonWithoutWO(playerId, season);
+            for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList1) {
+                int ret = scoreBoardPojo.getRet();
+                if (ret == 1) {
                     winsAndLosses[1] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
                 }
-            } else {
-                logger.error("ret is wrong");
             }
-        }
-
-        List<ScoreBoardPojo> scoreBoardPojoList2 = scoreBoardService.selectAsPlayer2BySeasonWithoutWO(playerId, season);
-        for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList2) {
-            int ret = scoreBoardPojo.getRet();
-            if (ret == 1) {
-                winsAndLosses[0] += 1;
-            } else if (ret == 2) {
-                winsAndLosses[1] += 1;
-            } else if (ret == 0) {
-                if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
-                    winsAndLosses[1] += 1;
-                } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+    
+            List<ScoreBoardPojo> scoreBoardPojoList2 = scoreBoardService.selectAsPlayer2BySeasonWithoutWO(playerId, season);
+            for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList2) {
+                int ret = scoreBoardPojo.getRet();
+                if (ret == 1) {
                     winsAndLosses[0] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
                 }
-            } else {
-                logger.error("ret is wrong");
+            }
+        } else if (singleOrDouble == NumConstants.DOUBLE_MATCH_MODE) {
+            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList1 = scoreBoardDoubleService.selectAsPlayer1BySeasonWithoutWO(playerId, season);
+            for (ScoreBoardDoublePojo scoreBoardDoublePojo : scoreBoardDoublePojoList1) {
+                int ret = scoreBoardDoublePojo.getRet();
+                if (ret == 1) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardDoublePojo.getPlayer1Score() > scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    } else if (scoreBoardDoublePojo.getPlayer1Score() < scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
+                }
+            }
+
+            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList2 = scoreBoardDoubleService.selectAsPlayer2BySeasonWithoutWO(playerId, season);
+            for (ScoreBoardDoublePojo scoreBoardDoublePojo : scoreBoardDoublePojoList2) {
+                int ret = scoreBoardDoublePojo.getRet();
+                if (ret == 1) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardDoublePojo.getPlayer1Score() > scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    } else if (scoreBoardDoublePojo.getPlayer1Score() < scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
+                }
             }
         }
 
         return winsAndLosses;
     }
 
-    public int[] getWinsAndLossesOfCareer(int playerId) {
-
+    public int[] getWinsAndLossesOfCareer(int playerId, int singleOrDouble) {
+        // 0-single 1-double
         int[] winsAndLosses = new int[2];
         winsAndLosses[0] = 0;
         winsAndLosses[1] = 0;
 
-        List<ScoreBoardPojo> scoreBoardPojoList1 = scoreBoardService.selectAsPlayer1WithoutWO(playerId);
-        for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList1) {
-            int ret = scoreBoardPojo.getRet();
-            if (ret == 1) {
-                winsAndLosses[1] += 1;
-            } else if (ret == 2) {
-                winsAndLosses[0] += 1;
-            } else if (ret == 0) {
-                if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
-                    winsAndLosses[0] += 1;
-                } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+        if (singleOrDouble == NumConstants.SINGLE_MATCH_MODE) {
+            List<ScoreBoardPojo> scoreBoardPojoList1 = scoreBoardService.selectAsPlayer1WithoutWO(playerId);
+            for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList1) {
+                int ret = scoreBoardPojo.getRet();
+                if (ret == 1) {
                     winsAndLosses[1] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
                 }
-            } else {
-                logger.error("ret is wrong");
             }
-        }
-
-        List<ScoreBoardPojo> scoreBoardPojoList2 = scoreBoardService.selectAsPlayer2WithoutWO(playerId);
-        for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList2) {
-            int ret = scoreBoardPojo.getRet();
-            if (ret == 1) {
-                winsAndLosses[0] += 1;
-            } else if (ret == 2) {
-                winsAndLosses[1] += 1;
-            } else if (ret == 0) {
-                if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
-                    winsAndLosses[1] += 1;
-                } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+    
+            List<ScoreBoardPojo> scoreBoardPojoList2 = scoreBoardService.selectAsPlayer2WithoutWO(playerId);
+            for (ScoreBoardPojo scoreBoardPojo : scoreBoardPojoList2) {
+                int ret = scoreBoardPojo.getRet();
+                if (ret == 1) {
                     winsAndLosses[0] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardPojo.getPlayer1Score() > scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    } else if (scoreBoardPojo.getPlayer1Score() < scoreBoardPojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
                 }
-            } else {
-                logger.error("ret is wrong");
+            }
+        } else if (singleOrDouble == NumConstants.DOUBLE_MATCH_MODE) {
+            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList1 = scoreBoardDoubleService.selectAsPlayer1WithoutWO(playerId);
+            for (ScoreBoardDoublePojo scoreBoardDoublePojo : scoreBoardDoublePojoList1) {
+                int ret = scoreBoardDoublePojo.getRet();
+                if (ret == 1) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardDoublePojo.getPlayer1Score() > scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    } else if (scoreBoardDoublePojo.getPlayer1Score() < scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
+                }
+            }
+
+            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList2 = scoreBoardDoubleService.selectAsPlayer2WithoutWO(playerId);
+            for (ScoreBoardDoublePojo scoreBoardDoublePojo : scoreBoardDoublePojoList2) {
+                int ret = scoreBoardDoublePojo.getRet();
+                if (ret == 1) {
+                    winsAndLosses[0] += 1;
+                } else if (ret == 2) {
+                    winsAndLosses[1] += 1;
+                } else if (ret == 0) {
+                    if (scoreBoardDoublePojo.getPlayer1Score() > scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[1] += 1;
+                    } else if (scoreBoardDoublePojo.getPlayer1Score() < scoreBoardDoublePojo.getPlayer2Score()) {
+                        winsAndLosses[0] += 1;
+                    }
+                } else {
+                    logger.error("ret is wrong");
+                }
             }
         }
 
@@ -440,31 +520,78 @@ public class RankService {
 
     public int getStatusOfCurrWeek(int playerId, int week, int season) {
 
-        List<ScoreBoardPojo> scoreBoardPojoList = scoreBoardService.selectByPlayerIdAndPhase(playerId, week, season);
-        if (scoreBoardPojoList.size() == 0) {
+        EventInfoPojo eventInfoPojo = eventInfoService.selectBySeasonAndWeek(season, week);
+        if (eventInfoPojo.getEventType() == NumConstants.SINGLE_MATCH_MODE) {
+
+            List<ScoreBoardPojo> scoreBoardPojoList = scoreBoardService.selectByPlayerIdAndPhase(playerId, week, season);
+            if (scoreBoardPojoList.size() == 0) {
+                return NumConstants.DNP;
+            }
+            Collections.sort(scoreBoardPojoList, new Comparator<ScoreBoardPojo>() {
+                @Override
+                public int compare(ScoreBoardPojo o1, ScoreBoardPojo o2) {
+                    return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
+                }
+            });
+
+            ScoreBoardPojo lastScoreBoardPojo = scoreBoardPojoList.get(0);
+            if (lastScoreBoardPojo.getPlayer1Id() == playerId) {
+                if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
+                    return NumConstants.IN;
+                } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
+                    return NumConstants.OUT;
+                }
+            } else if (lastScoreBoardPojo.getPlayer2Id() == playerId) {
+                if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
+                    return NumConstants.OUT;
+                } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
+                    return NumConstants.IN;
+                }
+            }
+            return NumConstants.DNP;
+        } else if (eventInfoPojo.getEventType() == NumConstants.DOUBLE_MATCH_MODE) {
+            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList = scoreBoardDoubleService.selectByPlayerIdAndPhase(playerId, week, season);
+            if (scoreBoardDoublePojoList.size() == 0) {
+                return NumConstants.DNP;
+            }
+            Collections.sort(scoreBoardDoublePojoList, new Comparator<ScoreBoardDoublePojo>() {
+                @Override
+                public int compare(ScoreBoardDoublePojo o1, ScoreBoardDoublePojo o2) {
+                    return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
+                }
+            });
+
+            ScoreBoardDoublePojo lastScoreBoardDoublePojo = scoreBoardDoublePojoList.get(0);
+            if (lastScoreBoardDoublePojo.getPlayer1IdA() == playerId || lastScoreBoardDoublePojo.getPlayer1IdB() == playerId) {
+                int ret = lastScoreBoardDoublePojo.getRet();
+                if (ret == 0) {
+                    if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                        return NumConstants.IN;
+                    } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                        return NumConstants.OUT;
+                    }
+                } else if (ret == 1) {
+                    return NumConstants.OUT;
+                } else if (ret == 2) {
+                    return NumConstants.IN;
+                }
+            } else if (lastScoreBoardDoublePojo.getPlayer2IdA() == playerId || lastScoreBoardDoublePojo.getPlayer2IdB() == playerId) {
+                int ret = lastScoreBoardDoublePojo.getRet();
+                if (ret == 0) {
+                    if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                        return NumConstants.OUT;
+                    } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                        return NumConstants.IN;
+                    }
+                } else if (ret == 1) {
+                    return NumConstants.IN;
+                } else if (ret == 2) {
+                    return NumConstants.OUT;
+                }
+            }
             return NumConstants.DNP;
         }
-        Collections.sort(scoreBoardPojoList, new Comparator<ScoreBoardPojo>() {
-            @Override
-            public int compare(ScoreBoardPojo o1, ScoreBoardPojo o2) {
-                return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
-            }
-        });
 
-        ScoreBoardPojo lastScoreBoardPojo = scoreBoardPojoList.get(0);
-        if (lastScoreBoardPojo.getPlayer1Id() == playerId) {
-            if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
-                return NumConstants.IN;
-            } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
-                return NumConstants.OUT;
-            }
-        } else if (lastScoreBoardPojo.getPlayer2Id() == playerId) {
-            if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
-                return NumConstants.OUT;
-            } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
-                return NumConstants.IN;
-            }
-        }
         return NumConstants.DNP;
     }
 
@@ -479,25 +606,26 @@ public class RankService {
         return gradeRecordService.selectNumOfTitlesOfCareerByPlayerId(playerId);
     }
 
-//    public Map<String, List<Integer>> getPtsComponentOfCurrSeason(int playerId, int week, int season) {
+//    public JSONObject getPtsComponentOfWholePeriod(int playerId, int week, int season) {
 //
 //        Map<String, List<Integer>> ptsMap = new HashMap<>();
-//        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(playerId, week, season);
+//        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfWholePeriod(playerId, week, season);
 //
-//        List<Integer> eventIdListOfGS = eventInfoService.selectEventIdOfSpecificEventLevelOfCurrSeason(eventLevelConstants.GS, season);
-//        List<Integer> eventIdListOfPM = eventInfoService.selectEventIdOfSpecificEventLevelOfCurrSeason(eventLevelConstants.PM, season);
-//        List<Integer> eventIdListOfAF = eventInfoService.selectEventIdOfSpecificEventLevelOfCurrSeason(eventLevelConstants.AF, season);
-//        eventIdListOfAF.addAll(eventInfoService.selectEventIdOfSpecificEventLevelOfCurrSeason(eventLevelConstants.ET, season));
-//
-//        if (eventIdListOfGS.size() != 2 || eventIdListOfPM.size() != 2 || eventIdListOfAF.size() != 2) {
-//            logger.error("the size of mandatory event is error");
+//        List<Integer> eventIdListOfT1 = eventInfoService.selectEventIdOfSpecificEventLevelOfWholePeriod(EventLevelConstants.T1, week, season);
+//        List<Integer> eventIdListOfT2 = eventInfoService.selectEventIdOfSpecificEventLevelOfWholePeriod(EventLevelConstants.T2, week, season);
+//        eventIdListOfT2.addAll(eventInfoService.selectEventIdOfSpecificEventLevelOfWholePeriod(EventLevelConstants.T2_PLUS, week, season));
+//        List<Integer> eventIdListOfT3 = eventInfoService.selectEventIdOfSpecificEventLevelOfWholePeriod(EventLevelConstants.T3, week, season);
+//        List<Integer> eventIdListOfYEC = eventInfoService.selectEventIdOfSpecificEventLevelOfWholePeriod(EventLevelConstants.YEC, week, season);
+//        if (eventIdListOfYEC.size() != 1) {
+//            logger.error("the num of YEC is wrong");
 //            return ptsMap;
 //        }
 //
-//        List<Integer> GSList = Arrays.asList(0, 0);
-//        List<Integer> PMList = Arrays.asList(0, 0);
-//        List<Integer> AFList = Arrays.asList(0, 0);
-//        List<Integer> NMList = new ArrayList<>();
+//        List<Integer> T1List = new ArrayList<>();
+//        List<Integer> T2List = new ArrayList<>();
+//        List<Integer> T3List = new ArrayList<>();
+//        List<Integer> YECList = new ArrayList<>();
+//
 //        for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
 //            int eventId = gradeRecordPojo.getEventId();
 //            int pts = gradeRecordPojo.getPts();
@@ -522,18 +650,18 @@ public class RankService {
 //            }
 //        });
 //
-//        ptsMap.put(eventLevelConstants.GS, GSList);
-//        ptsMap.put(eventLevelConstants.PM, PMList);
-//        ptsMap.put(eventLevelConstants.AF, AFList);
+//        ptsMap.put(EventLevelConstants.GS, GSList);
+//        ptsMap.put(EventLevelConstants.PM, PMList);
+//        ptsMap.put(EventLevelConstants.AF, AFList);
 //
 //        int num = NMList.size();
 //        if (num < NumConstants.TOP_PTS_NUM) {
 //            for (int i = 0; i < NumConstants.TOP_PTS_NUM - num; i ++) {
 //                NMList.add(0);
 //            }
-//            ptsMap.put(eventLevelConstants.NM, NMList);
+//            ptsMap.put(EventLevelConstants.NM, NMList);
 //        } else {
-//            ptsMap.put(eventLevelConstants.NM, NMList.subList(0, NumConstants.TOP_PTS_NUM));
+//            ptsMap.put(EventLevelConstants.NM, NMList.subList(0, NumConstants.TOP_PTS_NUM));
 //        }
 //
 //        return ptsMap;

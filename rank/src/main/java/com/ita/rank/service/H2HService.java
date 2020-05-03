@@ -2,10 +2,9 @@ package com.ita.rank.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ita.rank.enums.EventMode;
-import com.ita.rank.pojo.H2HRecordPojo;
-import com.ita.rank.pojo.PlayerInfoPojo;
-import com.ita.rank.pojo.ScoreBoardPojo;
+import com.ita.rank.dao.ScoreBoardDoubleMapper;
+import com.ita.rank.enums.EventType;
+import com.ita.rank.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +25,9 @@ public class H2HService {
     ScoreBoardService scoreBoardService;
 
     @Autowired
+    ScoreBoardDoubleService scoreBoardDoubleService;
+
+    @Autowired
     CurrentPhaseService currentPhaseService;
 
     @Autowired
@@ -34,8 +36,7 @@ public class H2HService {
     @Autowired
     EventInfoService eventInfoService;
     
-    
-    public JSONObject queryH2HVsPlayer(int player1Id, int player2Id) {
+    public JSONObject querySingleH2HVsPlayer(int player1Id, int player2Id) {
 
         JSONObject scoreRecordOfRivals = new JSONObject();
         JSONArray scoreRecordArr = new JSONArray();
@@ -43,8 +44,8 @@ public class H2HService {
         int currSeason = currentPhaseService.selectCurrentPhase().getCurrentSeason();
         String player1Name = playerInfoService.selectByPlayerId(player1Id).getPlayerName();
         String player2Name = playerInfoService.selectByPlayerId(player2Id).getPlayerName();
-        int lastRankOfPlayer1 = ptsRecordService.selectRankOfLastWeek(player1Id, currWeek, currSeason);
-        int lastRankOfPlayer2 = ptsRecordService.selectRankOfLastWeek(player2Id, currWeek, currSeason);
+        int lastRankOfPlayer1 = ptsRecordService.selectRankOfLastWeek(player1Id, currWeek + 1, currSeason);
+        int lastRankOfPlayer2 = ptsRecordService.selectRankOfLastWeek(player2Id, currWeek + 1, currSeason);
         scoreRecordOfRivals.put("player1Name", player1Name);
         scoreRecordOfRivals.put("player2Name", player2Name);
         scoreRecordOfRivals.put("player1Rank", lastRankOfPlayer1);
@@ -57,7 +58,12 @@ public class H2HService {
             int scoreOfPlayer1, scoreOfPlayer2;
             int rankOfPlayer1, rankOfPlayer2;
             String eventName = scoreBoardPojo.getEventName();
-            int eventMode = eventInfoService.selectByEventName(eventName, currSeason).getEventMode();
+            int season = scoreBoardPojo.getSeason();
+            EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, season);
+            int eventMode = eventInfo.getEventType();
+            String yearOfMatch = eventInfo.getDate().split("-")[0];
+            int wo = scoreBoardPojo.getWo();
+            int ret = scoreBoardPojo.getRet();
             H2HRecordPojo h2HRecordPojo = new H2HRecordPojo();
             if (scoreBoardPojo.getPlayer1Id() == player1Id) {
                 scoreOfPlayer1 = scoreBoardPojo.getPlayer1Score();
@@ -69,10 +75,13 @@ public class H2HService {
                 scoreOfPlayer2 = scoreBoardPojo.getPlayer1Score();
                 rankOfPlayer1 = scoreBoardPojo.getPlayer2Rank();
                 rankOfPlayer2 = scoreBoardPojo.getPlayer1Rank();
+                if (ret == 1) {
+                    ret = 2;
+                } else if (ret == 2) {
+                    ret = 1;
+                }
             }
 
-            int wo = scoreBoardPojo.getWo();
-            int ret = scoreBoardPojo.getRet();
             if (ret == 0) {
                 if (scoreOfPlayer1 > scoreOfPlayer2) {
                     h2HRecordPojo.setWinnerName(player1Name);
@@ -122,7 +131,7 @@ public class H2HService {
                 h2HRecordPojo.setEventMode(eventMode);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).toString());
+                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
                 h2HRecordPojo.setResultFlag(2);
                 winsOfPlayer2 += 1;
             } else if (ret == 2) {
@@ -135,15 +144,15 @@ public class H2HService {
                 h2HRecordPojo.setEventMode(eventMode);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).toString());
+                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
                 h2HRecordPojo.setResultFlag(1);
                 winsOfPlayer1 += 1;
             }
 
             JSONObject h2hRecordJson = new JSONObject();
-            h2hRecordJson.put("season", new StringBuilder().append("第").append(h2HRecordPojo.getSeason() + 1).append("季").toString());
+            h2hRecordJson.put("season", yearOfMatch);
             h2hRecordJson.put("eventLevel", h2HRecordPojo.getEventLevel());
-            h2hRecordJson.put("matchMode", EventMode.getModeByIndex(h2HRecordPojo.getEventMode()));
+            h2hRecordJson.put("matchMode", EventType.getModeByIndex(h2HRecordPojo.getEventMode()));
             h2hRecordJson.put("eventName", h2HRecordPojo.getEventName());
             h2hRecordJson.put("round", h2HRecordPojo.getRound());
             String result = new StringBuilder()
@@ -160,6 +169,140 @@ public class H2HService {
             h2hRecordJson.put("result", result);
             h2hRecordJson.put("score", h2HRecordPojo.getScore());
             h2hRecordJson.put("resultFlag", h2HRecordPojo.getResultFlag());
+
+            scoreRecordArr.add(h2hRecordJson);
+        }
+
+        scoreRecordOfRivals.put("winsOfPlayer1", winsOfPlayer1);
+        scoreRecordOfRivals.put("winsOfPlayer2", winsOfPlayer2);
+        scoreRecordOfRivals.put("result", scoreRecordArr);
+
+        return scoreRecordOfRivals;
+    }
+
+    public JSONObject queryDoubleH2HVsPlayer(int player1Id, int player2Id) {
+
+        JSONObject scoreRecordOfRivals = new JSONObject();
+        JSONArray scoreRecordArr = new JSONArray();
+        int currWeek = currentPhaseService.selectCurrentPhase().getCurrentWeek();
+        int currSeason = currentPhaseService.selectCurrentPhase().getCurrentSeason();
+        String player1Name = playerInfoService.selectByPlayerId(player1Id).getPlayerName();
+        String player2Name = playerInfoService.selectByPlayerId(player2Id).getPlayerName();
+        int lastRankOfPlayer1 = ptsRecordService.selectRankOfLastWeek(player1Id, currWeek + 1, currSeason);
+        int lastRankOfPlayer2 = ptsRecordService.selectRankOfLastWeek(player2Id, currWeek + 1, currSeason);
+        scoreRecordOfRivals.put("player1Name", player1Name);
+        scoreRecordOfRivals.put("player2Name", player2Name);
+        scoreRecordOfRivals.put("player1Rank", lastRankOfPlayer1);
+        scoreRecordOfRivals.put("player2Rank", lastRankOfPlayer2);
+
+        List<ScoreBoardDoublePojo> scoreBoardDoublePojoList = scoreBoardDoubleService.selectOfRivals(player1Id, player2Id);
+        int winsOfPlayer1 = 0;
+        int winsOfPlayer2 = 0;
+        for (ScoreBoardDoublePojo scoreBoardDoublePojo : scoreBoardDoublePojoList) {
+            String nameAndRankOfPlayer1, nameAndRankOfPlayer2;
+            int scoreOfPlayer1, scoreOfPlayer2;
+            String eventName = scoreBoardDoublePojo.getEventName();
+            int season = scoreBoardDoublePojo.getSeason();
+            EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, season);
+            int eventMode = eventInfo.getEventType();
+            String yearOfMatch = eventInfo.getDate().split("-")[0];
+            int wo = scoreBoardDoublePojo.getWo();
+            int ret = scoreBoardDoublePojo.getRet();
+            H2HRecordDoublePojo h2HRecordDoublePojo = new H2HRecordDoublePojo();
+            if (scoreBoardDoublePojo.getPlayer1IdA() == player1Id || scoreBoardDoublePojo.getPlayer1IdB() == player1Id) {
+                nameAndRankOfPlayer1 = scoreBoardDoublePojo.getPlayer1NameA() + "(" + scoreBoardDoublePojo.getPlayer1RankA() + ")" + "/" +
+                    scoreBoardDoublePojo.getPlayer1NameB() + "(" + scoreBoardDoublePojo.getPlayer1RankB() + ")";
+                nameAndRankOfPlayer2 = scoreBoardDoublePojo.getPlayer2NameA() + "(" + scoreBoardDoublePojo.getPlayer2RankA() + ")" + "/" +
+                    scoreBoardDoublePojo.getPlayer2NameB() + "(" + scoreBoardDoublePojo.getPlayer2RankB() + ")";
+                scoreOfPlayer1 = scoreBoardDoublePojo.getPlayer1Score();
+                scoreOfPlayer2 = scoreBoardDoublePojo.getPlayer2Score();
+            } else {
+                nameAndRankOfPlayer1 = scoreBoardDoublePojo.getPlayer2NameA() + "(" + scoreBoardDoublePojo.getPlayer2RankA() + ")" + "/" +
+                    scoreBoardDoublePojo.getPlayer2NameB() + "(" + scoreBoardDoublePojo.getPlayer2RankB() + ")";
+                nameAndRankOfPlayer2 = scoreBoardDoublePojo.getPlayer1NameA() + "(" + scoreBoardDoublePojo.getPlayer1RankA() + ")" + "/" +
+                    scoreBoardDoublePojo.getPlayer1NameB() + "(" + scoreBoardDoublePojo.getPlayer1RankB() + ")";
+                scoreOfPlayer1 = scoreBoardDoublePojo.getPlayer2Score();
+                scoreOfPlayer2 = scoreBoardDoublePojo.getPlayer1Score();
+                if (ret == 1) {
+                    ret = 2;
+                } else if (ret == 2) {
+                    ret = 1;
+                }
+            }
+
+            if (ret == 0) {
+                if (scoreOfPlayer1 > scoreOfPlayer2) {
+                    h2HRecordDoublePojo.setWinnerNameAndRank(nameAndRankOfPlayer1);
+                    h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer2);
+                    h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
+                    h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+                    h2HRecordDoublePojo.setEventMode(eventMode);
+                    h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
+                    h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
+
+                    if (wo == 0) {
+                        winsOfPlayer1 += 1;
+                        h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).toString());
+                        h2HRecordDoublePojo.setResultFlag(1);
+                    } else {
+                        h2HRecordDoublePojo.setScore("W/O");
+                        h2HRecordDoublePojo.setResultFlag(0);
+                    }
+                } else {
+                    h2HRecordDoublePojo.setWinnerNameAndRank(nameAndRankOfPlayer2);
+                    h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer1);
+                    h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
+                    h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+                    h2HRecordDoublePojo.setEventMode(eventMode);
+                    h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
+                    h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
+                    if (wo == 0) {
+                        winsOfPlayer2 += 1;
+                        h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).toString());
+                        h2HRecordDoublePojo.setResultFlag(2);
+                    } else {
+                        h2HRecordDoublePojo.setScore("W/O");
+                        h2HRecordDoublePojo.setResultFlag(0);
+                    }
+                }
+            } else if (ret == 1) {
+                h2HRecordDoublePojo.setWinnerNameAndRank(nameAndRankOfPlayer2);
+                h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer1);
+                h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
+                h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+                h2HRecordDoublePojo.setEventMode(eventMode);
+                h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
+                h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
+                h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
+                h2HRecordDoublePojo.setResultFlag(2);
+                winsOfPlayer2 += 1;
+            } else if (ret == 2) {
+                h2HRecordDoublePojo.setWinnerNameAndRank(nameAndRankOfPlayer1);
+                h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer2);
+                h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
+                h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
+                h2HRecordDoublePojo.setEventMode(eventMode);
+                h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
+                h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
+                h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
+                h2HRecordDoublePojo.setResultFlag(1);
+                winsOfPlayer1 += 1;
+            }
+
+            JSONObject h2hRecordJson = new JSONObject();
+            h2hRecordJson.put("season", yearOfMatch);
+            h2hRecordJson.put("eventLevel", h2HRecordDoublePojo.getEventLevel());
+            h2hRecordJson.put("matchMode", EventType.getModeByIndex(h2HRecordDoublePojo.getEventMode()));
+            h2hRecordJson.put("eventName", h2HRecordDoublePojo.getEventName());
+            h2hRecordJson.put("round", h2HRecordDoublePojo.getRound());
+            String result = new StringBuilder()
+                .append(h2HRecordDoublePojo.getWinnerNameAndRank())
+                .append(" d. ")
+                .append(h2HRecordDoublePojo.getLoserNameAndRank())
+                .toString();
+            h2hRecordJson.put("result", result);
+            h2hRecordJson.put("score", h2HRecordDoublePojo.getScore());
+            h2hRecordJson.put("resultFlag", h2HRecordDoublePojo.getResultFlag());
 
             scoreRecordArr.add(h2hRecordJson);
         }
@@ -193,7 +336,9 @@ public class H2HService {
             int winOrLose = 2; // 0-win 1-lose
             int ret = scoreBoardPojo.getRet();
             String eventName = scoreBoardPojo.getEventName();
-            int eventMode = eventInfoService.selectByEventName(eventName, currSeason).getEventMode();
+            EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, currSeason);
+            int eventMode = eventInfo.getEventMode();
+            String yearOfMatch = eventInfo.getDate().split("-")[0];
 
             if (scoreBoardPojo.getPlayer1Id() == playerId) {
                 rankOfPlayer = scoreBoardPojo.getPlayer1Rank();
@@ -275,17 +420,17 @@ public class H2HService {
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                 if (winOrLose == 0) {
                     h2HRecordPojo.setResultFlag(1);
-                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer).append(" - ").append(scoreOfTopN).toString());
+                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer).append(" - ").append(scoreOfTopN).append(" ret.").toString());
                 } else if (winOrLose == 1) {
                     h2HRecordPojo.setResultFlag(2);
-                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfTopN).append(" - ").append(scoreOfPlayer).toString());
+                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfTopN).append(" - ").append(scoreOfPlayer).append(" ret.").toString());
                 }
             }
 
             JSONObject h2hRecordJson = new JSONObject();
-            h2hRecordJson.put("season", new StringBuilder().append("第").append(h2HRecordPojo.getSeason() + 1).append("季").toString());
+            h2hRecordJson.put("season", yearOfMatch);
             h2hRecordJson.put("eventLevel", h2HRecordPojo.getEventLevel());
-            h2hRecordJson.put("matchMode", EventMode.getModeByIndex(h2HRecordPojo.getEventMode()));
+            h2hRecordJson.put("matchMode", EventType.getModeByIndex(h2HRecordPojo.getEventMode()));
             h2hRecordJson.put("eventName", h2HRecordPojo.getEventName());
             h2hRecordJson.put("round", h2HRecordPojo.getRound());
             String result = new StringBuilder()

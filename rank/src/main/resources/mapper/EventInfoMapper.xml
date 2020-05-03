@@ -32,7 +32,7 @@
       level_code, match_mode, week, 
       season)
     values (#{id,jdbcType=INTEGER}, #{eventId,jdbcType=INTEGER}, #{eventName,jdbcType=VARCHAR}, 
-      #{levelCode,jdbcType=VARCHAR}, #{eventMode,jdbcType=INTEGER}, #{week,jdbcType=INTEGER},
+      #{levelCode,jdbcType=VARCHAR}, #{eventType,jdbcType=INTEGER}, #{week,jdbcType=INTEGER},
       #{season,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ita.rank.pojo.EventInfoPojo" >
@@ -50,7 +50,7 @@
       <if test="levelCode != null" >
         level_code,
       </if>
-      <if test="eventMode != null" >
+      <if test="eventType != null" >
         match_mode,
       </if>
       <if test="week != null" >
@@ -73,8 +73,8 @@
       <if test="levelCode != null" >
         #{levelCode,jdbcType=VARCHAR},
       </if>
-      <if test="eventMode != null" >
-        #{eventMode,jdbcType=INTEGER},
+      <if test="eventType != null" >
+        #{eventType,jdbcType=INTEGER},
       </if>
       <if test="week != null" >
         #{week,jdbcType=INTEGER},
@@ -93,8 +93,8 @@
       <if test="levelCode != null" >
         level_code = #{levelCode,jdbcType=VARCHAR},
       </if>
-      <if test="eventMode != null" >
-        match_mode = #{eventMode,jdbcType=INTEGER},
+      <if test="eventType != null" >
+        match_mode = #{eventType,jdbcType=INTEGER},
       </if>
       <if test="week != null" >
         week = #{week,jdbcType=INTEGER},
@@ -110,7 +110,7 @@
     update event_info
     set event_name = #{eventName,jdbcType=VARCHAR},
       level_code = #{levelCode,jdbcType=VARCHAR},
-      match_mode = #{eventMode,jdbcType=INTEGER},
+      match_mode = #{eventType,jdbcType=INTEGER},
       week = #{week,jdbcType=INTEGER},
       season = #{season,jdbcType=INTEGER}
     where id = #{id,jdbcType=INTEGER}

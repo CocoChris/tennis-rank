@@ -30,7 +30,7 @@ public class HomePageController {
 
     private final Logger logger = LoggerFactory.getLogger(HomePageController.class);
 
-    @PostConstruct
+//    @PostConstruct
     public void init() {
   
         logger.info("start initializing hotSearchList");

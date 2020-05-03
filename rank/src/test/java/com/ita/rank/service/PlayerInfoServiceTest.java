@@ -3,6 +3,7 @@ package com.ita.rank.service;
 import com.alibaba.fastjson.JSON;
 import com.ita.rank.pojo.PlayerInfoPojo;
 import com.ita.rank.utils.XlsxUtil;
+import org.apache.ibatis.annotations.Insert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,28 @@ public class PlayerInfoServiceTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void testInsert() {
+        List<PlayerInfoPojo> playerInfoPojoList = new ArrayList<>();
+        PlayerInfoPojo pojo1 = new PlayerInfoPojo();
+        pojo1.setPlayerName("菠萝的海");
+        playerInfoPojoList.add(pojo1);
+        PlayerInfoPojo pojo2 = new PlayerInfoPojo();
+        pojo2.setPlayerName("彪");
+        playerInfoPojoList.add(pojo2);
+        PlayerInfoPojo pojo3 = new PlayerInfoPojo();
+        pojo3.setPlayerName("Dennis");
+        playerInfoPojoList.add(pojo3);
+        PlayerInfoPojo pojo4 = new PlayerInfoPojo();
+        pojo4.setPlayerName("RC");
+        playerInfoPojoList.add(pojo4);
+        PlayerInfoPojo pojo5 = new PlayerInfoPojo();
+        pojo5.setPlayerName("James");
+        playerInfoPojoList.add(pojo5);
+
+        playerInfoService.insertBatch(playerInfoPojoList);
     }
 
     @Test

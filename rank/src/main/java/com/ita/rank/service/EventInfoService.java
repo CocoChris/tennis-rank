@@ -36,4 +36,8 @@ public class EventInfoService {
 
         return eventInfoMapper.selectEventIdOfSpecificEventLevelOfCurrSeason(eventLevel, season);
     }
+
+    public int insert(EventInfoPojo eventInfoPojo) {
+        return eventInfoMapper.insert(eventInfoPojo);
+    }
 }

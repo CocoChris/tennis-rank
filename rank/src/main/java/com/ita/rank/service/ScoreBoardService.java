@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,7 +52,7 @@ public class ScoreBoardService {
             logger.error("the round is wrong " + scoreBoardPojo.toString());
             return 0;
         }
-        if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score()) {
+        if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getRet() == 0) {
             logger.error("the scores can not be equal " + scoreBoardPojo.toString());
             return 0;
         }
@@ -116,7 +115,7 @@ public class ScoreBoardService {
                 return 0;
             }
 
-            if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getWo() == 0) {
+            if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getRet() == 0) {
                 logger.error("the scores can not be equal " + scoreBoardPojo.toString());
                 return 0;
             }

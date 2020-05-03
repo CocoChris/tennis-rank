@@ -56,14 +56,14 @@ public class RankServiceTest {
 
     @Test
     public void testGetWinsAndLossesOfCurrSeason() {
-        int[] winsAndLosses = rankService.getWinsAndLossesOfCurrSeason(1018, 1);
-        System.out.println(winsAndLosses[0] + "-" + winsAndLosses[1]);
+//        int[] winsAndLosses = rankService.getWinsAndLossesOfCurrSeason(1018, 1);
+//        System.out.println(winsAndLosses[0] + "-" + winsAndLosses[1]);
     }
 
     @Test
     public void testGetWinsAndLossesOfCareer() {
-        int[] winsAndLosses = rankService.getWinsAndLossesOfCareer(1018);
-        System.out.println(winsAndLosses[0] + "-" + winsAndLosses[1]);
+//        int[] winsAndLosses = rankService.getWinsAndLossesOfCareer(1018);
+//        System.out.println(winsAndLosses[0] + "-" + winsAndLosses[1]);
     }
 
     @Test

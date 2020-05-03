@@ -1,5 +1,6 @@
 package com.ita.rank.service;
 
+import com.ita.rank.pojo.EventInfoPojo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,20 @@ public class EventInfoServiceTest {
     @Test
     public void testselectEventIdOfSpecificEventLevelOfCurrSeason() {
         System.out.println(eventInfoService.selectEventIdOfSpecificEventLevelOfCurrSeason("GS",  2));
+    }
+
+    @Test
+    public void testInsert() {
+        EventInfoPojo eventInfoPojo = new EventInfoPojo();
+        eventInfoPojo.setEventId(2003);
+        eventInfoPojo.setEventName("翠微鸣柳大师赛");
+        eventInfoPojo.setLevelCode("BD16");
+        eventInfoPojo.setEventType(1);
+        eventInfoPojo.setEventMode(0);
+        eventInfoPojo.setWeek(4);
+        eventInfoPojo.setSeason(2);
+        eventInfoPojo.setDate("2020-05-01");
+
+        eventInfoService.insert(eventInfoPojo);
     }
 }

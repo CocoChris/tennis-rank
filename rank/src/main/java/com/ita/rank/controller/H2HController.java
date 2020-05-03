@@ -2,6 +2,7 @@ package com.ita.rank.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ita.rank.common.constants.NumConstants;
 import com.ita.rank.pojo.PlayerInfoPojo;
 import com.ita.rank.service.H2HService;
 import com.ita.rank.service.PlayerInfoService;
@@ -35,9 +36,15 @@ public class H2HController {
     @RequestMapping(method = GET, value = "/vsPlayer")
     @ResponseBody
     public JSONObject showH2HVsPlayer(@RequestParam("player1Id") int player1Id,
-                                      @RequestParam("player2Id") int player2Id) {
+                                      @RequestParam("player2Id") int player2Id,
+                                      @RequestParam("singleOrDouble") int singleOrDouble) {
 
-        JSONObject h2hRecordVsPlayerJson = h2HService.queryH2HVsPlayer(player1Id, player2Id);
+        JSONObject h2hRecordVsPlayerJson = new JSONObject();
+        if (singleOrDouble == NumConstants.SINGLE_MATCH_MODE) {
+            h2hRecordVsPlayerJson = h2HService.querySingleH2HVsPlayer(player1Id, player2Id);
+        } else if (singleOrDouble == NumConstants.DOUBLE_MATCH_MODE) {
+            h2hRecordVsPlayerJson = h2HService.queryDoubleH2HVsPlayer(player1Id, player2Id);
+        }
 
         PlayerInfoPojo playerInfoPojo1 = playerInfoService.selectByPlayerId(player1Id);
         PlayerInfoPojo playerInfoPojo2 = playerInfoService.selectByPlayerId(player2Id);
