@@ -1,6 +1,12 @@
 <template>
   <div style="height:100%;width:100%">
     <div class="selectContainer">
+      <el-radio-group v-model="single">
+        <el-radio-button label="0">单打</el-radio-button>
+        <el-radio-button label="1">双打</el-radio-button>
+      </el-radio-group>
+    </div>
+    <div class="selectContainer">
       <el-select size="large"
                  v-model="player1Select"
                  filterable
@@ -128,7 +134,8 @@ export default {
       player1Select: '',
       player2Select: '',
       resultData: [],
-      loading: true
+      loading: true,
+      single: 0
     }
   },
   // eslint-disable-next-line
@@ -148,10 +155,10 @@ export default {
           // console.log(response)
         })
     },
-    getJsonInfo: function (player1Id, player2Id) {
+    getJsonInfo: function (player1Id, player2Id, single) {
       this.$http
         .get(
-          '/api/h2h/vsPlayer?player1Id=' + player1Id + '&player2Id=' + player2Id
+          '/api/h2h/vsPlayer?player1Id=' + player1Id + '&player2Id=' + player2Id + '&singleOrDouble=' + single
         )
         .then(function (response) {
           var resdata = response.data
@@ -205,7 +212,9 @@ export default {
     playerSelected: function () {
       this.loading = true
       if ((this.player1Select !== '') & (this.player2Select !== '')) {
-        this.getJsonInfo(this.player1Select, this.player2Select)
+        this.getJsonInfo(this.player1Select, this.player2Select, this.single)
+      } else {
+        // TODO: alert
       }
     },
     // eslint-disable-next-line
@@ -230,6 +239,7 @@ export default {
         return {}
       }
     },
+    // signleChange: function (value) { this.single = value },
     // eslint-disable-next-line
     smallCol() {
       if (this.$_isMobile) {
