@@ -8,5 +8,6 @@ source grade_record.sql;
 source player_info.sql;
 source pts_record.sql;
 source score_board.sql;
+source score_board_double.sql;
 
 EOF

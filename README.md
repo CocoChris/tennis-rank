@@ -18,7 +18,7 @@
 1. `cp .env.bak .env`
 2. Change the password in `.env`
 3. For the database init
-   1. `docker exec [mysql contaainer] -it /bin/sh`
+   1. `docker exec -it [mysql contaainer] /bin/sh`
    2. `bash /code/init.sh`
 
 ## Start Service
