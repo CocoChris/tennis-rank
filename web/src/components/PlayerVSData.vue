@@ -1,5 +1,5 @@
 <template>
-  <div class="playerDataContainer">
+  <div class="playerVSDataContainer">
     <div v-if="!TopNMode"
          class="playerTitle"
          :style="titleOrder()">
@@ -33,7 +33,7 @@
 
 <script>
 export default {
-  name: 'PlayerData',
+  name: 'PlayerVSData',
   components: {},
   props: ['player', 'playerIndex', 'TopNMode'],
   data: function () {
@@ -52,7 +52,7 @@ export default {
 
 <style>
 @media screen and (orientation: landscape) {
-  .playerDataContainer {
+  .playerVSDataContainer {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -85,7 +85,7 @@ export default {
 }
 
 @media screen and (orientation: portrait) {
-  .playerDataContainer {
+  .playerVSDataContainer {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
