@@ -224,7 +224,7 @@ export default {
           for (res in resdata) {
             var player = resdata[res]
             // console.log(player)
-            var playerdata = {
+            var playervsdata = {
               liveRank: player.liveRank,
               playerName: player.playerName,
               totalPts: player.totalPts,
@@ -250,13 +250,13 @@ export default {
               highestRank: player.highestRank
             }
             if (player.minusPts !== 0) {
-              playerdata['minusPts'] = '-' + player.minusPts
+              playervsdata['minusPts'] = '-' + player.minusPts
             }
             if (player.plusPts !== 0) {
-              playerdata['plusPts'] = player.plusPts
+              playervsdata['plusPts'] = player.plusPts
             }
-            // console.log(playerdata)
-            this.tableData.push(playerdata)
+            // console.log(playervsdata)
+            this.tableData.push(playervsdata)
           }
           this.loading = false
         })

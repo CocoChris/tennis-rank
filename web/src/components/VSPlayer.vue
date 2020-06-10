@@ -48,7 +48,7 @@
         <el-col class="playerInfo"
                 :span="8">
 
-          <PlayerData v-bind:player="player1"
+          <PlayerVSData v-bind:player="player1"
                       playerIndex="player1" />
 
           <el-progress class="playerProgress player1"
@@ -66,7 +66,7 @@
         <el-col class="playerInfo"
                 :span="8">
 
-          <PlayerData v-bind:player="player2"
+          <PlayerVSData v-bind:player="player2"
                       playerIndex="player2" />
 
           <el-progress class="playerProgress player2"
@@ -115,14 +115,14 @@
 
 <script>
 import VSRing from '@/components/VSRing'
-import PlayerData from '@/components/PlayerData'
+import PlayerVSData from '@/components/PlayerVSData'
 import VueResource from 'vue-resource'
 
 export default {
   name: 'VSPlayer',
   components: {
     VSRing,
-    PlayerData,
+    PlayerVSData,
     VueResource
   },
   // eslint-disable-next-line
