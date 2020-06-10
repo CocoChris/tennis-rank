@@ -27,7 +27,7 @@ public class EventLevelConstants {
         } else if (eventLevel.equals(T3)) {
             return "国际赛";
         } else if (eventLevel.equals(YEC)) {
-            return "大年终";
+            return "年终";
         } else {
             return "";
         }

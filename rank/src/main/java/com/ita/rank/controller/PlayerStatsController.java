@@ -28,8 +28,8 @@ public class PlayerStatsController {
 
     @RequestMapping(method = GET, value = "/api/stats/ptsComponent")
     @ResponseBody
-    public PlayerStatsPojo showPlayerStats(@RequestParam("playerName") String playerName) {
-        PlayerStatsPojo playerStatsPojo = playerStatsService.getPlayerStats(playerName);
+    public PlayerStatsPojo showPlayerStats(@RequestParam("playerId") int playerId) {
+        PlayerStatsPojo playerStatsPojo = playerStatsService.getPlayerStats(playerId);
         return playerStatsPojo;
     }
 }

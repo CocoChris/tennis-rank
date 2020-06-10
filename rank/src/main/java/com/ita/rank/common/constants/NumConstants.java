@@ -19,6 +19,7 @@ public class NumConstants {
 
     public static final int SINGLE_MATCH_MODE = 0;
     public static final int DOUBLE_MATCH_MODE = 1;
+    public static final int TEAM_MATCH_MODE = 2;
 
     public static final int SCORE_UNHANDLED = 0;
     public static final int SCORE_HANDLED = 1;

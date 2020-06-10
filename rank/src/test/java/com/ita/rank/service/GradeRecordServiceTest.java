@@ -54,7 +54,17 @@ public class GradeRecordServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            FileInputStream inputStream = new FileInputStream("src/main/resources/txt/grade_season_1.txt");
+            String fileName = "src/main/resources/txt/grade_week_5_season_2.txt";
+
+            String[] splits1 = fileName.split("/");
+            String[] splits2 = splits1[splits1.length - 1].split("_");
+
+            int week = Integer.valueOf(splits2[2]);
+            int season = Integer.valueOf(splits2[4].split("\\.")[0]);
+
+            System.out.println("week = " + week + ", season = " + season);
+
+            FileInputStream inputStream = new FileInputStream(fileName);
             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
             String str;
@@ -64,11 +74,9 @@ public class GradeRecordServiceTest {
                 if (!str.equals("")) {
 //                    System.out.println(str);
                     String[] values = str.split(",");
-                    int week = Integer.valueOf(values[0]) + 1;
-                    String playerName = values[1];
-                    int pts = Integer.valueOf(values[2]);
-                    String grade = values[3];
-                    int season = 1;
+                    String playerName = values[0];
+                    int pts = Integer.valueOf(values[1]);
+                    String grade = values[2];
                     int qualified = 0;
 
                     GradeRecordPojo record = new GradeRecordPojo();

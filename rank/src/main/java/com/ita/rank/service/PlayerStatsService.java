@@ -50,13 +50,13 @@ public class PlayerStatsService {
 
     private static final Logger logger = LoggerFactory.getLogger(PlayerStatsService.class);
 
-    public PlayerStatsPojo getPlayerStats(String playerName) {
+    public PlayerStatsPojo getPlayerStats(int playerId) {
 
         int currWeek = currentPhaseService.selectCurrentPhase().getCurrentWeek();
         int currSeason = currentPhaseService.selectCurrentPhase().getCurrentSeason();
 
         PlayerStatsPojo playerStatsPojo = new PlayerStatsPojo();
-        int playerId = playerInfoService.selectByPlayerName(playerName).getPlayerId();
+        String playerName = playerInfoService.selectByPlayerId(playerId).getPlayerName();
         int currRank = ptsRecordService.selectRankOfLastWeek(playerId, currWeek + 1, currSeason);
         int highestRank = ptsRecordService.selectHighestRank(playerId, currWeek + 1, currSeason);
 

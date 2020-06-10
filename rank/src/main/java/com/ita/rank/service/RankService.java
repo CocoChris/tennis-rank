@@ -10,6 +10,7 @@ import com.ita.rank.processor.Classifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.reactive.context.GenericReactiveWebApplicationContext;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -590,6 +591,18 @@ public class RankService {
                 }
             }
             return NumConstants.DNP;
+        } else if (eventInfoPojo.getEventType() == NumConstants.TEAM_MATCH_MODE) {
+            int eventId = eventInfoPojo.getEventId();
+            GradeRecordPojo gradeRecordPojo = gradeRecordService.selectByPlayerId(playerId, eventId);
+            if (gradeRecordPojo == null) {
+                return NumConstants.DNP;
+            }
+            String grade = gradeRecordPojo.getGrade();
+            if (grade == "W") {
+                return NumConstants.IN;
+            } else {
+                return NumConstants.OUT;
+            }
         }
 
         return NumConstants.DNP;

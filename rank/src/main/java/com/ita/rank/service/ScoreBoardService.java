@@ -110,10 +110,10 @@ public class ScoreBoardService {
             String player1Name = scoreBoardPojo.getPlayer1Name();
             String player2Name = scoreBoardPojo.getPlayer2Name();
             String round = scoreBoardPojo.getRound();
-            if (!EventRound.isRoundValid(round)) {
-                logger.error("the round is wrong " + scoreBoardPojo.toString());
-                return 0;
-            }
+//            if (!EventRound.isRoundValid(round)) {
+//                logger.error("the round is wrong " + scoreBoardPojo.toString());
+//                return 0;
+//            }
 
             if (scoreBoardPojo.getPlayer1Score() == scoreBoardPojo.getPlayer2Score() && scoreBoardPojo.getRet() == 0) {
                 logger.error("the scores can not be equal " + scoreBoardPojo.toString());
@@ -132,10 +132,10 @@ public class ScoreBoardService {
                 String eventName = eventInfoPojo.getEventName();
                 String levelCode = eventInfoPojo.getLevelCode();
 
-                if (eventLevelService.getScore(round, levelCode, season) == null) {
-                    logger.error("the round is wrong " + scoreBoardPojo.toString());
-                    return 0;
-                }
+//                if (eventLevelService.getScore(round, levelCode, season) == null) {
+//                    logger.error("the round is wrong " + scoreBoardPojo.toString());
+//                    return 0;
+//                }
 
                 String eventLevel;
 

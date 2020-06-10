@@ -57,7 +57,7 @@ public class ScoreBoardServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            String fileName = "src/main/resources/txt/score_week_4_season_2.txt";
+            String fileName = "src/main/resources/txt/score_week_6_season_2.txt";
             String[] splits1 = fileName.split("/");
             String[] splits2 = splits1[splits1.length - 1].split("_");
 
@@ -90,7 +90,7 @@ public class ScoreBoardServiceTest {
                         int player1Score = Integer.valueOf(values[1]);
                         String player2Name = values[3];
                         int player2Score = Integer.valueOf(values[2]);
-    
+
                         int player1Id = playerInfoService.selectByPlayerName(player1Name).getPlayerId();
                         int player1Rank = ptsRecordService.selectRankOfLastWeek(player1Id, week, season);
                         int player2Id = playerInfoService.selectByPlayerName(player2Name).getPlayerId();
