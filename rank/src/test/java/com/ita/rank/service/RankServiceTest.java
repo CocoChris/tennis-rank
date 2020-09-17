@@ -1,5 +1,6 @@
 package com.ita.rank.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ita.rank.pojo.ClassifiblePojo;
 import com.ita.rank.pojo.GradeRecordPojo;
 import com.ita.rank.processor.Classifier;
@@ -35,12 +36,16 @@ public class RankServiceTest {
     @Test
     public void testQueryRankInfo() {
 
-        List<GradeRecordPojo> pojoList =  gradeRecordService.selectGradeRecordListOfWholePeriod(1002, 20, 1);
-        List<ClassifiblePojo> classifiblePojoList = new ArrayList<>();
-        for (GradeRecordPojo gradeRecordPojo : pojoList) {
-            classifiblePojoList.add(gradeRecordPojo);
-        }
-        classifier.classifyByEventLevel(classifiblePojoList);
+        JSONObject res = rankService.queryLiveRankInfo();
+
+        System.out.println(res);
+
+//        List<GradeRecordPojo> pojoList =  gradeRecordService.selectGradeRecordListOfWholePeriod(1002, 20, 1);
+//        List<ClassifiblePojo> classifiblePojoList = new ArrayList<>();
+//        for (GradeRecordPojo gradeRecordPojo : pojoList) {
+//            classifiblePojoList.add(gradeRecordPojo);
+//        }
+//        classifier.classifyByEventLevel(classifiblePojoList);
     }
 
     @Test

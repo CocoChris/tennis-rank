@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public enum EventRound {
 
+    RR(-1, "RR"),
     QR1(0, "QR1"),
     QR2(1, "QR2"),
     QFi(2, "QFi"),

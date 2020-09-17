@@ -50,9 +50,9 @@ public class ScoreCalculatorTest {
 
     @Test
     public void testGradeRecordUpdater() {
-        scoreCalculator.ptsRecordInitializer(6, 2);
-        scoreCalculator.gradeRecordUpdater();
-        scoreCalculator.rankUpdater(6, 2);
+        scoreCalculator.ptsRecordInitializer(7, 2);
+//        scoreCalculator.gradeRecordUpdater();
+        scoreCalculator.rankUpdater(7, 2);
     }
 
     @Test

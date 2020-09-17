@@ -57,7 +57,7 @@ public class ScoreBoardServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            String fileName = "src/main/resources/txt/score_week_6_season_2.txt";
+            String fileName = "src/main/resources/txt/score_week_7_season_2.txt";
             String[] splits1 = fileName.split("/");
             String[] splits2 = splits1[splits1.length - 1].split("_");
 

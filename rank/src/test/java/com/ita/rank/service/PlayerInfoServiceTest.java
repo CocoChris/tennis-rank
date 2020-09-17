@@ -69,10 +69,10 @@ public class PlayerInfoServiceTest {
     public void testInsert() {
         List<PlayerInfoPojo> playerInfoPojoList = new ArrayList<>();
         PlayerInfoPojo pojo1 = new PlayerInfoPojo();
-        pojo1.setPlayerName("小崽");
+        pojo1.setPlayerName("作业本");
         playerInfoPojoList.add(pojo1);
         PlayerInfoPojo pojo2 = new PlayerInfoPojo();
-        pojo2.setPlayerName("Albert");
+        pojo2.setPlayerName("Frederic");
         playerInfoPojoList.add(pojo2);
 //        PlayerInfoPojo pojo3 = new PlayerInfoPojo();
 //        pojo3.setPlayerName("来来");
