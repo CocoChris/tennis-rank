@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: test
+    active: dev
 #  datasource:
 #    driver-class-name: com.mysql.jdbc.Driver
 #    url: jdbc:mysql://localhost:3306/ita?useSSL=false&useUnicode=yes&characterEncoding=UTF-8
