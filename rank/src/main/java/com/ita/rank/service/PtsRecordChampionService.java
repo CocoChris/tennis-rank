@@ -2,6 +2,7 @@ package com.ita.rank.service;
 
 import com.ita.rank.dao.PtsRecordChampionMapper;
 import com.ita.rank.pojo.PtsRecordChampionPojo;
+import com.ita.rank.pojo.PtsRecordPojo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class PtsRecordChampionService {
     @Autowired
     PlayerInfoService playerInfoService;
 
-    private static final int RANK_NONE = 9999;
+    private static final int RANK_NONE = 999;
 
     private final Logger logger = LoggerFactory.getLogger(PtsRecordChampionService.class);
 
@@ -33,6 +34,10 @@ public class PtsRecordChampionService {
 
     public List<PtsRecordChampionPojo> selectByWeekAndSeason(int week, int season) {
         return ptsRecordChampionMapper.selectByWeekAndSeason(week, season);
+    }
+
+    public PtsRecordChampionPojo selectByPlayerIdAndPhase(int playerId, int week, int season) {
+        return ptsRecordChampionMapper.selectByPlayerIdAndPhase(playerId, week, season);
     }
 
     public Integer selectRankOfLastWeek(int playerId, int week, int season) {

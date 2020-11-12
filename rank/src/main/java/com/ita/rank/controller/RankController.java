@@ -39,7 +39,7 @@ public class RankController {
 
         logger.info("start initializing rankInfo");
         liveRankInfoJson = rankService.queryLiveRankInfo();
-//        championRankInfoJson = rankService.queryChampionRankInfo();
+        championRankInfoJson = rankService.queryChampionRankInfo();
         logger.info("The rank info init time is: {}", sdf.format(new Date()));
     }
 

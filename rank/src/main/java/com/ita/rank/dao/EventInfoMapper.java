@@ -18,6 +18,10 @@ public interface EventInfoMapper {
     EventInfoPojo selectBySeasonAndWeek(@Param("season") int season,
                                         @Param("week") int week);
 
+    @Select("select * from " + TABLE_NAME + " where season = #{season} and week <= #{week}")
+    List<EventInfoPojo> selectBySeason(@Param("season") int season,
+                                       @Param("week") int week);
+
     @Select("select * from " + TABLE_NAME + " where season = #{season} and binary event_name like concat('%', #{eventName}, '%')")
     EventInfoPojo selectByEventName(@Param("eventName") String eventName,
                                     @Param("season") int season);

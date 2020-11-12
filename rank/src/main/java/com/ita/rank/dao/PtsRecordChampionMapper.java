@@ -11,6 +11,11 @@ public interface PtsRecordChampionMapper {
     String TABLE_NAME = "pts_record_champion";
 
     @Select("select * from " + TABLE_NAME + " where player_id = #{playerId} and week = #{week} and season = #{season}")
+    PtsRecordChampionPojo selectByPlayerIdAndPhase(@Param("playerId") int playerId,
+                                                   @Param("week") int week,
+                                                   @Param("season") int season);
+
+    @Select("select * from " + TABLE_NAME + " where player_id = #{playerId} and week = #{week} and season = #{season}")
     PtsRecordChampionPojo selectByPlayerId(@Param("playerId") int playerId,
                                            @Param("week") int week,
                                            @Param("season") int season);

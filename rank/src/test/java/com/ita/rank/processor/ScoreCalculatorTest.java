@@ -50,29 +50,32 @@ public class ScoreCalculatorTest {
 
     @Test
     public void testGradeRecordUpdater() {
-        scoreCalculator.ptsRecordInitializer(7, 2);
+        scoreCalculator.ptsRecordInitializer(10, 2);
 //        scoreCalculator.gradeRecordUpdater();
-        scoreCalculator.rankUpdater(7, 2);
+        scoreCalculator.rankUpdater(10, 2);
+        scoreCalculator.championPtsRecordInitializer(10, 2);
+        scoreCalculator.championRankUpdater(10, 2);
+        currentPhaseService.updateWeek(10);
     }
 
     @Test
     public void testAFScoreCalculator() {
 
-//        // 更新第一季大小年终期间的积分和冠军积分
-//        for (int i = 18; i <= 21; i ++) {
+        // 更新第二季的冠军积分
+        for (int i = 1; i <= 9; i ++) {
 //            scoreCalculator.ptsRecordOfSeason1Initializer(i, 1);
-//            scoreCalculator.championPtsRecordOfSeason1Initializer(i, 1);
-//        }
+            scoreCalculator.championPtsRecordInitializer(i, 2);
+        }
 
 //        // 更新第一季0-21期排名
 //        for (int i = 0; i <= 21; i ++) {
 //            scoreCalculator.rankUpdater(i, 1);
 //        }
 //
-//        // 更新第一季1-21期冠军排名
-//        for (int i = 0; i <= 21; i ++) {
-//            scoreCalculator.championRankUpdater(i, 1);
-//        }
+        // 更新第二季1-9期冠军排名
+        for (int i = 1; i <= 9; i ++) {
+            scoreCalculator.championRankUpdater(i, 2);
+        }
 //
 //
 //        // 更新第一季比分板排名
@@ -112,7 +115,12 @@ public class ScoreCalculatorTest {
 
     @Test
     public void testPtsCalculator() {
-        scoreCalculator.ptsCalculator(1002, 0, 2);
+        scoreCalculator.ptsCalculator(2, 0, 2);
+    }
+
+    @Test
+    public void testChampionPtsCalculator() {
+        scoreCalculator.championPtsCalculator(5, 9, 2);
     }
 
     @Test
@@ -121,7 +129,7 @@ public class ScoreCalculatorTest {
     }
 
     @Test
-    public void testchampionPtsRecordOfSeason1Update() {
+    public void testChampionPtsRecordOfSeason1Update() {
         scoreCalculator.championPtsRecordOfSeason1Initializer(0, 1);
     }
 

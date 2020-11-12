@@ -22,6 +22,10 @@ public class EventInfoService {
         return eventInfoMapper.selectBySeasonAndWeek(season, week);
     }
 
+    public List<EventInfoPojo> selectBySeason(int season, int week) {
+        return eventInfoMapper.selectBySeason(season, week);
+    }
+
     public EventInfoPojo selectByEventName(String eventName, int season) {
 
         return eventInfoMapper.selectByEventName(eventName, season);

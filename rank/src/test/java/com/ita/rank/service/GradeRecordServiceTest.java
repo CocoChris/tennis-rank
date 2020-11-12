@@ -45,7 +45,7 @@ public class GradeRecordServiceTest {
 
     @Test
     public void testSelectGradeRecordList() {
-        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(1004, 8, 2);
+        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(1, 9, 2);
         for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
             System.out.println(gradeRecordPojo.toString());
         }
@@ -54,7 +54,7 @@ public class GradeRecordServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            String fileName = "src/main/resources/txt/grade_week_7_season_2.txt";
+            String fileName = "src/main/resources/txt/grade_week_10_season_2.txt";
 
             String[] splits1 = fileName.split("/");
             String[] splits2 = splits1[splits1.length - 1].split("_");

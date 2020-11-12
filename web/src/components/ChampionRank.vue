@@ -52,23 +52,37 @@
                        prop="ptsOfGS1"
                        :min-width="smallCol()"
                        align="center"
-                       label="中壶"></el-table-column>
+                       label="天马山"></el-table-column>
       <el-table-column sortable
                        prop="ptsOfGS2"
                        :min-width="smallCol()"
                        align="center"
-                       label="乌壶"></el-table-column>
-
+                       label="阳澄湖"></el-table-column>
+      <!-- <el-table-column sortable
+                       prop="ptsOfGS3"
+                       :min-width="smallCol()"
+                       align="center"
+                       label="旗忠"></el-table-column> -->
       <el-table-column sortable
                        prop="ptsOfPM1"
                        :min-width="smallCol()"
                        align="center"
-                       label="IW"></el-table-column>
+                       label="山河无恙"></el-table-column>
       <el-table-column sortable
                        prop="ptsOfPM2"
                        :min-width="smallCol()"
                        align="center"
-                       label="马德里"></el-table-column>
+                       label="翠微鸣柳"></el-table-column>
+      <el-table-column sortable
+                       prop="ptsOfPM3"
+                       :min-width="smallCol()"
+                       align="center"
+                       label="天使之翼"></el-table-column>
+      <el-table-column sortable
+                       prop="ptsOfPM4"
+                       :min-width="smallCol()"
+                       align="center"
+                       label="星语星源"></el-table-column>
 
       <!-- <el-table-column sortable
                        prop="ptsOfAF"
@@ -111,16 +125,6 @@
                        :min-width="smallCol()"
                        align="center"
                        label="No.6"></el-table-column>
-      <el-table-column sortable
-                       prop="ptsOfNo7"
-                       :min-width="smallCol()"
-                       align="center"
-                       label="No.7"></el-table-column>
-      <el-table-column sortable
-                       prop="ptsOfNo8"
-                       :min-width="smallCol()"
-                       align="center"
-                       label="No.8"></el-table-column>
 
       <el-table-column prop="reachNewHIghsOfRank"
                        v-if="show"></el-table-column>
@@ -179,8 +183,12 @@ export default {
 
               ptsOfGS1: player.ptsOfGS1,
               ptsOfGS2: player.ptsOfGS2,
+              ptsOfGS3: player.ptsOfGS3,
               ptsOfPM1: player.ptsOfPM1,
               ptsOfPM2: player.ptsOfPM2,
+              ptsOfPM3: player.ptsOfPM3,
+              ptsOfPM4: player.ptsOfPM4,
+              ptsOfPM5: player.ptsOfPM5,
               ptsOfAF: player.ptsOfAF,
               ptsOfET: player.ptsOfET,
               ptsOfNo1: player.ptsOfNo1,
@@ -188,9 +196,7 @@ export default {
               ptsOfNo3: player.ptsOfNo3,
               ptsOfNo4: player.ptsOfNo4,
               ptsOfNo5: player.ptsOfNo5,
-              ptsOfNo6: player.ptsOfNo6,
-              ptsOfNo7: player.ptsOfNo7,
-              ptsOfNo8: player.ptsOfNo8
+              ptsOfNo6: player.ptsOfNo6
             }
             // if (player.minusPts !== 0) {
             //   playervsdata['minusPts'] = '-' + player.minusPts

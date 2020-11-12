@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.ita.rank.common.constants.EventLevelConstants;
 import com.ita.rank.common.constants.NumConstants;
+import com.ita.rank.common.utils.CommonUtil;
 import com.ita.rank.enums.EventRound;
 import com.ita.rank.pojo.*;
 import com.ita.rank.processor.Classifier;
+import com.sun.prism.shader.Solid_TextureYV12_AlphaTest_Loader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static com.ita.rank.common.constants.NumConstants.TOP_PTS_NUM;
 import static java.lang.Math.min;
 
 /**
@@ -50,6 +53,9 @@ public class RankService {
 
     @Autowired
     EventInfoService eventInfoService;
+
+    @Autowired
+    EventLevelService eventLevelService;
 
     private final Logger logger = LoggerFactory.getLogger(RankService.class);
 
@@ -142,85 +148,99 @@ public class RankService {
         return liveRankInfoJson;
     }
 
-//    public JSONObject queryChampionRankInfo() {
-//
-//        JSONObject championRankInfoJson = new JSONObject();
-//        championRankInfoJson.put("id", 1);
-//        championRankInfoJson.put("jsonrpc", "2.0");
-//        JSONArray result = new JSONArray();
-//
-//        int currWeek = currentPhaseService.selectCurrentPhase().getCurrentWeek();
-//        int currSeason = currentPhaseService.selectCurrentPhase().getCurrentSeason();
-//
-//        List<PtsRecordChampionPojo> ptsRecordChampionPojoList = ptsRecordChampionService.selectByWeekAndSeason(currWeek, currSeason);
-//
-//        for (int i = 0; i < ptsRecordChampionPojoList.size(); i ++) {
-//            PtsRecordChampionPojo ptsRecordChampion = ptsRecordChampionPojoList.get(i);
-//            ChampionRankInfoPojo championRankInfo = new ChampionRankInfoPojo();
-//
-//            int playerId = ptsRecordChampion.getPlayerId();
-//            int championRank = ptsRecordChampion.getRank();
-//            int preRank = ptsRecordChampionService.selectRankOfLastWeek(playerId, currWeek, currSeason);
-//            int rankChange = championRank - preRank;
-//
-//            String playerName = ptsRecordChampion.getPlayerName();
-//            int totalPts = ptsRecordChampion.getTotalPts();
-//            int plusPts = getPlusPts(playerId, currWeek, currSeason);
-//
-//            Map<String, List<Integer>> ptsMap = getPtsComponentOfCurrSeason(playerId, currWeek, currSeason);
-//            List<Integer> ptsListOfNM = ptsMap.get(EventLevelConstants.NM);
-//            int minValidPts = ptsListOfNM.get(NumConstants.TOP_PTS_NUM - 1);
-//            String currGrade = getCurrGrade(playerId, currWeek, currSeason);
-//            int stateOfCurrWeek = getStatusOfCurrWeek(playerId, currWeek, currSeason);
-//
-//            int ptsOfGS1 = ptsMap.get(EventLevelConstants.GS).get(0);
-//            int ptsOfGS2 = ptsMap.get(EventLevelConstants.GS).get(1);
-//            int ptsOfPM1 = ptsMap.get(EventLevelConstants.PM).get(0);
-//            int ptsOfPM2 = ptsMap.get(EventLevelConstants.PM).get(1);
-//            int ptsOfAF = ptsMap.get(EventLevelConstants.AF).get(0);
-//            int ptsOfET = ptsMap.get(EventLevelConstants.AF).get(1);
-//            int ptsOfNo1 = ptsListOfNM.get(0);
-//            int ptsOfNo2 = ptsListOfNM.get(1);
-//            int ptsOfNo3 = ptsListOfNM.get(2);
-//            int ptsOfNo4 = ptsListOfNM.get(3);
-//            int ptsOfNo5 = ptsListOfNM.get(4);
-//            int ptsOfNo6 = ptsListOfNM.get(5);
-//            int ptsOfNo7 = ptsListOfNM.get(6);
-//            int ptsOfNo8 = ptsListOfNM.get(7);
-//
-//            championRankInfo.setRank(championRank);
-//            championRankInfo.setRankChange(rankChange);
-//            championRankInfo.setPlayerName(playerName);
-//            championRankInfo.setTotalPts(totalPts);
-//            championRankInfo.setPlusPts(plusPts);
-//            championRankInfo.setMinValidPts(minValidPts);
-//            championRankInfo.setCurrGrade(currGrade);
-//            championRankInfo.setStateOfCurrWeek(stateOfCurrWeek);
-//            championRankInfo.setPtsOfGS1(ptsOfGS1);
-//            championRankInfo.setPtsOfGS2(ptsOfGS2);
-//            championRankInfo.setPtsOfPM1(ptsOfPM1);
-//            championRankInfo.setPtsOfPM2(ptsOfPM2);
-//            championRankInfo.setPtsOfAF(ptsOfAF);
-//            championRankInfo.setPtsOfET(ptsOfET);
-//            championRankInfo.setPtsOfNo1(ptsOfNo1);
-//            championRankInfo.setPtsOfNo2(ptsOfNo2);
-//            championRankInfo.setPtsOfNo3(ptsOfNo3);
-//            championRankInfo.setPtsOfNo4(ptsOfNo4);
-//            championRankInfo.setPtsOfNo5(ptsOfNo5);
-//            championRankInfo.setPtsOfNo6(ptsOfNo6);
-//            championRankInfo.setPtsOfNo7(ptsOfNo7);
-//            championRankInfo.setPtsOfNo8(ptsOfNo8);
-//
-//            JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(championRankInfo));
-//            result.add(jsonObject);
-//        }
-//
-//        String updateTime = sdf.format(new Date());
-//        championRankInfoJson.put("updateTime", updateTime);
-//        championRankInfoJson.put("result", result);
-//
-//        return championRankInfoJson;
-//    }
+    public JSONObject queryChampionRankInfo() {
+
+        JSONObject championRankInfoJson = new JSONObject();
+        championRankInfoJson.put("id", 1);
+        championRankInfoJson.put("jsonrpc", "2.0");
+        JSONArray result = new JSONArray();
+
+        int currWeek = currentPhaseService.selectCurrentPhase().getCurrentWeek();
+        int currSeason = currentPhaseService.selectCurrentPhase().getCurrentSeason();
+
+        List<PtsRecordChampionPojo> ptsRecordChampionPojoList = ptsRecordChampionService.selectByWeekAndSeason(currWeek, currSeason);
+
+        for (int i = 0; i < ptsRecordChampionPojoList.size(); i ++) {
+            PtsRecordChampionPojo ptsRecordChampion = ptsRecordChampionPojoList.get(i);
+            ChampionRankInfoPojo championRankInfo = new ChampionRankInfoPojo();
+
+            int playerId = ptsRecordChampion.getPlayerId();
+            int championRank = ptsRecordChampion.getRank();
+            int preRank = ptsRecordChampionService.selectRankOfLastWeek(playerId, currWeek, currSeason);
+            int rankChange = championRank - preRank;
+
+            String playerName = ptsRecordChampion.getPlayerName();
+            int totalPts = ptsRecordChampion.getTotalPts();
+            int plusPts = getPlusPts(playerId, currWeek, currSeason);
+
+            Map<String, List<Integer>> ptsMap = getPtsComponentOfCurrSeason(playerId, currWeek, currSeason);
+            List<Integer> T1List = ptsMap.get(EventLevelConstants.T1);
+            List<Integer> T2List = ptsMap.get(EventLevelConstants.T2);
+            List<Integer> T3List = ptsMap.get(EventLevelConstants.T3);
+            Collections.sort(T3List);
+            Collections.reverse(T3List);
+            List<Integer> YECList = ptsMap.get(EventLevelConstants.YEC);
+            int minValidPts = ptsMap.get("minValidPts").get(0);
+//            if (YECList.size() > 0) {
+//                minValidPts = min(YECList.get(0), T3List.get(NumConstants.TOP_PTS_NUM - 2));
+//            } else {
+//                minValidPts = T3List.get(NumConstants.TOP_PTS_NUM - 1);
+//            }
+            String currGrade = getCurrGrade(playerId, currWeek, currSeason);
+            int stateOfCurrWeek = getStatusOfCurrWeek(playerId, currWeek, currSeason);
+
+            int ptsOfGS1 = T1List.size() > 0 ? T1List.get(0) : 0;
+            int ptsOfGS2 = T1List.size() > 1 ? T1List.get(1) : 0;
+            int ptsOfGS3 = T1List.size() > 2 ? T1List.get(2) : 0;
+            int ptsOfPM1 = T2List.size() > 0 ? T2List.get(0) : 0;
+            int ptsOfPM2 = T2List.size() > 1 ? T2List.get(1) : 0;
+            int ptsOfPM3 = T2List.size() > 2 ? T2List.get(2) : 0;
+            int ptsOfPM4 = T2List.size() > 3 ? T2List.get(3) : 0;
+            int ptsOfPM5 = T2List.size() > 4 ? T2List.get(4) : 0;
+            int ptsOfAF = YECList.size() > 0 ? YECList.get(0) : 0;
+            int ptsOfET = YECList.size() > 1 ? YECList.get(1) : 0;
+            int ptsOfNo1 = T3List.size() > 0 ? T3List.get(0) : 0;
+            int ptsOfNo2 = T3List.size() > 1 ? T3List.get(1) : 0;
+            int ptsOfNo3 = T3List.size() > 2 ? T3List.get(2) : 0;
+            int ptsOfNo4 = T3List.size() > 3 ? T3List.get(3) : 0;
+            int ptsOfNo5 = T3List.size() > 4 ? T3List.get(4) : 0;
+            int ptsOfNo6 = T3List.size() > 5 ? T3List.get(5) : 0;
+
+            championRankInfo.setRank(championRank);
+            championRankInfo.setRankChange(rankChange);
+            championRankInfo.setPlayerName(playerName);
+            championRankInfo.setTotalPts(totalPts);
+            championRankInfo.setPlusPts(plusPts);
+            championRankInfo.setMinValidPts(minValidPts);
+            championRankInfo.setCurrGrade(currGrade);
+            championRankInfo.setStateOfCurrWeek(stateOfCurrWeek);
+            championRankInfo.setPtsOfGS1(ptsOfGS1);
+            championRankInfo.setPtsOfGS2(ptsOfGS2);
+            championRankInfo.setPtsOfGS3(ptsOfGS3);
+            championRankInfo.setPtsOfPM1(ptsOfPM1);
+            championRankInfo.setPtsOfPM2(ptsOfPM2);
+            championRankInfo.setPtsOfPM3(ptsOfPM3);
+            championRankInfo.setPtsOfPM4(ptsOfPM4);
+            championRankInfo.setPtsOfPM5(ptsOfPM5);
+            championRankInfo.setPtsOfAF(ptsOfAF);
+            championRankInfo.setPtsOfET(ptsOfET);
+            championRankInfo.setPtsOfNo1(ptsOfNo1);
+            championRankInfo.setPtsOfNo2(ptsOfNo2);
+            championRankInfo.setPtsOfNo3(ptsOfNo3);
+            championRankInfo.setPtsOfNo4(ptsOfNo4);
+            championRankInfo.setPtsOfNo5(ptsOfNo5);
+            championRankInfo.setPtsOfNo6(ptsOfNo6);
+
+            JSONObject jsonObject = JSONObject.parseObject(JSONObject.toJSONString(championRankInfo));
+            result.add(jsonObject);
+        }
+
+        String updateTime = sdf.format(new Date());
+        championRankInfoJson.put("updateTime", updateTime);
+        championRankInfoJson.put("result", result);
+
+        return championRankInfoJson;
+    }
 
 
     public int getMinusPts(int playerId, int week, int season) {
@@ -260,7 +280,7 @@ public class RankService {
             });
 
 //            System.out.println(otherList);
-            int minValidPts = (otherList.size() < NumConstants.TOP_PTS_NUM ? 0 : otherList.get(NumConstants.TOP_PTS_NUM - 1));
+            int minValidPts = (otherList.size() < TOP_PTS_NUM ? 0 : otherList.get(TOP_PTS_NUM - 1));
 
             return minValidPts;
         }
@@ -295,7 +315,7 @@ public class RankService {
             });
 
 //            System.out.println(otherList);
-            int minValidPts = (otherList.size() < NumConstants.TOP_PTS_NUM ? 0 : otherList.get(NumConstants.TOP_PTS_NUM - 1));
+            int minValidPts = (otherList.size() < TOP_PTS_NUM ? 0 : otherList.get(TOP_PTS_NUM - 1));
 
             return minValidPts;
         }
@@ -679,4 +699,134 @@ public class RankService {
 //
 //        return ptsMap;
 //    }
+
+    public Map<String, List<Integer>> getPtsComponentOfCurrSeason(int playerId, int week, int season) {
+
+        Map<String, List<Integer>> ptsMap = new HashMap<>();
+        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(playerId, week, season);
+
+        Map<String, List<Integer>> eventLevelMap = new HashMap<>();
+        eventLevelMap.put(EventLevelConstants.T1, new ArrayList<>());
+        eventLevelMap.put(EventLevelConstants.T2, new ArrayList<>());
+        eventLevelMap.put(EventLevelConstants.T3, new ArrayList<>());
+        eventLevelMap.put(EventLevelConstants.YEC, new ArrayList<>());
+        List<EventInfoPojo> eventInfoPojoList = eventInfoService.selectBySeason(season, week);
+        for (EventInfoPojo eventInfoPojo : eventInfoPojoList) {
+            int w = eventInfoPojo.getWeek();
+            String levelCode = eventInfoPojo.getLevelCode();
+            String eventLevel = eventLevelService.selectLevelByCode(levelCode).getLevel();
+
+            if (eventLevel.equals(EventLevelConstants.T1)) {
+                eventLevelMap.get(eventLevel).add(w);
+            } else if (eventLevel.equals(EventLevelConstants.T2) || eventLevel.equals(EventLevelConstants.T2_PLUS)) {
+                eventLevelMap.get(EventLevelConstants.T2).add(w);
+            } else if (eventLevel.equals(EventLevelConstants.T3)) {
+                eventLevelMap.get(eventLevel).add(w);
+            } else if (eventLevel.equals(EventLevelConstants.YEC)) {
+                eventLevelMap.get(eventLevel).add(w);
+            } else {
+                logger.error("event level code is wrong");
+                return ptsMap;
+            }
+
+        }
+
+        List<Integer> T1List = new ArrayList<>();
+        List<Integer> T2List = new ArrayList<>();
+        List<Integer> T3List = new ArrayList<>();
+        List<Integer> YECList = new ArrayList<>();
+
+        if (eventLevelMap.containsKey(EventLevelConstants.T1)) {
+            for (int i = 0; i < eventLevelMap.get(EventLevelConstants.T1).size(); i ++) {
+                T1List.add(0);
+            }
+        }
+        if (eventLevelMap.containsKey(EventLevelConstants.T2)) {
+            for (int i = 0; i < eventLevelMap.get(EventLevelConstants.T2).size(); i ++) {
+                T2List.add(0);
+            }
+        }
+        if (eventLevelMap.containsKey(EventLevelConstants.T2_PLUS)) {
+            for (int i = 0; i < eventLevelMap.get(EventLevelConstants.T2_PLUS).size(); i ++) {
+                T2List.add(0);
+            }
+        }
+        if (eventLevelMap.containsKey(EventLevelConstants.T3)) {
+            for (int i = 0; i < eventLevelMap.get(EventLevelConstants.T3).size(); i ++) {
+                T3List.add(0);
+            }
+        }
+        if (eventLevelMap.containsKey(EventLevelConstants.YEC)) {
+            for (int i = 0; i < eventLevelMap.get(EventLevelConstants.YEC).size(); i ++) {
+                YECList.add(0);
+            }
+        }
+
+        for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
+            String eventLevel = gradeRecordPojo.getEventLevel();
+            int w = gradeRecordPojo.getWeek();
+            int pts = gradeRecordPojo.getPts();
+            if (eventLevel.equals(EventLevelConstants.T1)) {
+                int index = eventLevelMap.get(EventLevelConstants.T1).indexOf(w);
+                T1List.set(index, pts);
+            } else if (eventLevel.equals(EventLevelConstants.T2) || eventLevel.equals(EventLevelConstants.T2_PLUS)) {
+                int index = eventLevelMap.get(EventLevelConstants.T2).indexOf(w);
+                T2List.set(index, pts);
+            } else if (eventLevel.equals(EventLevelConstants.T3)) {
+                int index = eventLevelMap.get(EventLevelConstants.T3).indexOf(w);
+                T3List.set(index, pts);
+            } else if (eventLevel.equals(EventLevelConstants.YEC)) {
+                int index = eventLevelMap.get(EventLevelConstants.YEC).indexOf(w);
+                YECList.set(index, pts);
+            } else {
+                logger.error("event level code is wrong");
+                return ptsMap;
+            }
+        }
+
+        if (YECList.size() > 1) {
+            logger.error("the num of YEC list is wrong");
+            return ptsMap;
+        }
+
+        List<Integer> T3ValidList = new ArrayList<>(T3List);
+
+        Collections.sort(T3ValidList, new Comparator<Integer>() {
+            @Override
+            public int compare(Integer o1, Integer o2) {
+                return o2 - o1;
+            }
+        });
+
+        ptsMap.put(EventLevelConstants.T1, T1List);
+        ptsMap.put(EventLevelConstants.T2, T2List);
+        ptsMap.put(EventLevelConstants.YEC, YECList);
+
+        int minValidPts = 0;
+        if (T3ValidList.size() >= TOP_PTS_NUM) {
+            if (YECList.size() == 0) {
+                minValidPts = T3ValidList.get(TOP_PTS_NUM - 1);
+            } else {
+                minValidPts = T3ValidList.get(TOP_PTS_NUM - 2);
+            }
+            int k = 0;
+            for (int i = 0; i < T3List.size(); i ++) {
+                if (T3List.get(i) < minValidPts) {
+                    T3List.set(i, 0);
+                } else if (T3List.get(i) == minValidPts) {
+                    if (k == 0) {
+                        k += 1;
+                    } else {
+                        T3List.set(i, 0);
+                    }
+                }
+            }
+        }
+        ptsMap.put(EventLevelConstants.T3, T3List);
+        List<Integer> l = new ArrayList<>();
+        l.add(minValidPts);
+        ptsMap.put("minValidPts", l);
+
+        return ptsMap;
+    }
 }

@@ -30,9 +30,17 @@ public class ChampionRankInfoPojo {
 
     private int ptsOfGS2;
 
+    private int ptsOfGS3;
+
     private int ptsOfPM1;
 
     private int ptsOfPM2;
+
+    private int ptsOfPM3;
+
+    private int ptsOfPM4;
+
+    private int ptsOfPM5;
 
     private int ptsOfAF;
 
@@ -49,8 +57,4 @@ public class ChampionRankInfoPojo {
     private int ptsOfNo5;
 
     private int ptsOfNo6;
-
-    private int ptsOfNo7;
-
-    private int ptsOfNo8;
 }

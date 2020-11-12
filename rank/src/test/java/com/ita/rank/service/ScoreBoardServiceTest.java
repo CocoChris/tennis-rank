@@ -57,7 +57,7 @@ public class ScoreBoardServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            String fileName = "src/main/resources/txt/score_week_7_season_2.txt";
+            String fileName = "src/main/resources/txt/score_week_10_season_2.txt";
             String[] splits1 = fileName.split("/");
             String[] splits2 = splits1[splits1.length - 1].split("_");
 
@@ -126,6 +126,8 @@ public class ScoreBoardServiceTest {
                         }
     
                         if (size == 7) {
+                            int wo = Integer.valueOf(values[5]);
+                            scoreBoardPojo.setWo(wo);
                             int ret = Integer.valueOf(values[6]);
                             scoreBoardPojo.setRet(ret);
                         }

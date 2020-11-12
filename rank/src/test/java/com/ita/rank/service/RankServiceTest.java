@@ -51,7 +51,7 @@ public class RankServiceTest {
     @Test
     public void testQueryChampionRankInfo() {
 
-//        System.out.println(rankService.queryChampionRankInfo());
+        System.out.println(rankService.queryChampionRankInfo());
     }
 
     @Test
@@ -94,6 +94,6 @@ public class RankServiceTest {
 
     @Test
     public void testGetPtsComponentOfCurrSeason() {
-//        System.out.println(rankService.getPtsComponentOfCurrSeason(1002, 13, 2));
+        System.out.println(rankService.getPtsComponentOfCurrSeason(1, 16, 2));
     }
 }

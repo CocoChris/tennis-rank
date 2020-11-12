@@ -60,7 +60,7 @@ public class H2HService {
             String eventName = scoreBoardPojo.getEventName();
             int season = scoreBoardPojo.getSeason();
             EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, season);
-            int eventMode = eventInfo.getEventType();
+            int eventType = eventInfo.getEventType();
             String yearOfMatch = eventInfo.getDate().split("-")[0];
             int wo = scoreBoardPojo.getWo();
             int ret = scoreBoardPojo.getRet();
@@ -90,7 +90,7 @@ public class H2HService {
                     h2HRecordPojo.setLoserRank(rankOfPlayer2);
                     h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                     h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                    h2HRecordPojo.setEventMode(eventMode);
+                    h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
 
@@ -109,7 +109,7 @@ public class H2HService {
                     h2HRecordPojo.setLoserRank(rankOfPlayer1);
                     h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                     h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                    h2HRecordPojo.setEventMode(eventMode);
+                    h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                     if (wo == 0) {
@@ -128,7 +128,7 @@ public class H2HService {
                 h2HRecordPojo.setLoserRank(rankOfPlayer1);
                 h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                 h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                h2HRecordPojo.setEventMode(eventMode);
+                h2HRecordPojo.setEventMode(eventType);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                 h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
@@ -141,7 +141,7 @@ public class H2HService {
                 h2HRecordPojo.setLoserRank(rankOfPlayer2);
                 h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                 h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                h2HRecordPojo.setEventMode(eventMode);
+                h2HRecordPojo.setEventMode(eventType);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                 h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
@@ -204,7 +204,7 @@ public class H2HService {
             String eventName = scoreBoardDoublePojo.getEventName();
             int season = scoreBoardDoublePojo.getSeason();
             EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, season);
-            int eventMode = eventInfo.getEventType();
+            int eventType = eventInfo.getEventType();
             String yearOfMatch = eventInfo.getDate().split("-")[0];
             int wo = scoreBoardDoublePojo.getWo();
             int ret = scoreBoardDoublePojo.getRet();
@@ -236,7 +236,7 @@ public class H2HService {
                     h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer2);
                     h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
                     h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
-                    h2HRecordDoublePojo.setEventMode(eventMode);
+                    h2HRecordDoublePojo.setEventMode(eventType);
                     h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                     h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
 
@@ -253,7 +253,7 @@ public class H2HService {
                     h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer1);
                     h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
                     h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
-                    h2HRecordDoublePojo.setEventMode(eventMode);
+                    h2HRecordDoublePojo.setEventMode(eventType);
                     h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                     h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
                     if (wo == 0) {
@@ -270,7 +270,7 @@ public class H2HService {
                 h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer1);
                 h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
                 h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
-                h2HRecordDoublePojo.setEventMode(eventMode);
+                h2HRecordDoublePojo.setEventMode(eventType);
                 h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                 h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
                 h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
@@ -281,7 +281,7 @@ public class H2HService {
                 h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer2);
                 h2HRecordDoublePojo.setSeason(scoreBoardDoublePojo.getSeason());
                 h2HRecordDoublePojo.setEventLevel(scoreBoardDoublePojo.getEventLevel());
-                h2HRecordDoublePojo.setEventMode(eventMode);
+                h2HRecordDoublePojo.setEventMode(eventType);
                 h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                 h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
                 h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
@@ -337,7 +337,8 @@ public class H2HService {
             int ret = scoreBoardPojo.getRet();
             String eventName = scoreBoardPojo.getEventName();
             EventInfoPojo eventInfo = eventInfoService.selectByEventName(eventName, currSeason);
-            int eventMode = eventInfo.getEventMode();
+            int eventType = eventInfo.getEventType();
+
             String yearOfMatch = eventInfo.getDate().split("-")[0];
 
             if (scoreBoardPojo.getPlayer1Id() == playerId) {
@@ -378,7 +379,7 @@ public class H2HService {
                     h2HRecordPojo.setLoserRank(rankOfTopN);
                     h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                     h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                    h2HRecordPojo.setEventMode(eventMode);
+                    h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                     if (wo == 0) {
@@ -396,7 +397,7 @@ public class H2HService {
                     h2HRecordPojo.setLoserRank(rankOfPlayer);
                     h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                     h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                    h2HRecordPojo.setEventMode(scoreBoardPojo.getMatchMode());
+                    h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                     if (wo == 0) {
@@ -409,13 +410,20 @@ public class H2HService {
                     }
                 }
             } else if (ret == 1 || ret == 2) {
-                h2HRecordPojo.setWinnerName(playerName);
-                h2HRecordPojo.setLoserName(topNName);
-                h2HRecordPojo.setWinnerRank(rankOfPlayer);
-                h2HRecordPojo.setLoserRank(rankOfTopN);
+                if (ret == 1) {
+                    h2HRecordPojo.setWinnerName(scoreBoardPojo.getPlayer2Name());
+                    h2HRecordPojo.setLoserName(scoreBoardPojo.getPlayer1Name());
+                    h2HRecordPojo.setWinnerRank(scoreBoardPojo.getPlayer2Rank());
+                    h2HRecordPojo.setLoserRank(scoreBoardPojo.getPlayer1Rank());
+                } else if (ret == 2) {
+                    h2HRecordPojo.setWinnerName(scoreBoardPojo.getPlayer1Name());
+                    h2HRecordPojo.setLoserName(scoreBoardPojo.getPlayer2Name());
+                    h2HRecordPojo.setWinnerRank(scoreBoardPojo.getPlayer1Rank());
+                    h2HRecordPojo.setLoserRank(scoreBoardPojo.getPlayer2Rank());
+                }
                 h2HRecordPojo.setSeason(scoreBoardPojo.getSeason());
                 h2HRecordPojo.setEventLevel(scoreBoardPojo.getEventLevel());
-                h2HRecordPojo.setEventMode(eventMode);
+                h2HRecordPojo.setEventMode(eventType);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
                 if (winOrLose == 0) {

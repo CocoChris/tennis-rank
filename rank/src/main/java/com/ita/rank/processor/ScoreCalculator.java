@@ -63,12 +63,12 @@ public class ScoreCalculator {
                 currentPhaseService.updateSeason(season);
 
                 ptsRecordInitializer(week, season);
-//                championPtsRecordInitializer(week, season);
+                championPtsRecordInitializer(week, season);
             } else if (season == currentPhaseService.selectCurrentPhase().getCurrentSeason() && week > currentPhaseService.selectCurrentPhase().getCurrentWeek()) {
                 currentPhaseService.updateWeek(week);
 
                 ptsRecordInitializer(week, season);
-//                championPtsRecordInitializer(week, season);
+                championPtsRecordInitializer(week, season);
             }
             try {
                 updateGradeRecordFromScoreBoard(scoreBoardPojoUnhandled);
@@ -89,12 +89,12 @@ public class ScoreCalculator {
                 currentPhaseService.updateSeason(season);
 
                 ptsRecordInitializer(week, season);
-//                championPtsRecordInitializer(week, season);
+                championPtsRecordInitializer(week, season);
             } else if (season == currentPhaseService.selectCurrentPhase().getCurrentSeason() && week > currentPhaseService.selectCurrentPhase().getCurrentWeek()) {
                 currentPhaseService.updateWeek(week);
 
                 ptsRecordInitializer(week, season);
-//                championPtsRecordInitializer(week, season);
+                championPtsRecordInitializer(week, season);
             }
             try {
                 updateGradeRecordFromScoreBoardDouble(scoreBoardDoublePojoUnhandled);
@@ -424,8 +424,8 @@ public class ScoreCalculator {
 
         ptsCalculator(player1Id, week, season);
         ptsCalculator(player2Id, week, season);
-//        championPtsCalculator(player1Id, week, season);
-//        championPtsCalculator(player2Id, week, season);
+        championPtsCalculator(player1Id, week, season);
+        championPtsCalculator(player2Id, week, season);
     }
 
     public void updatePtsRecordFromScoreBoardDouble(ScoreBoardDoublePojo scoreBoardDoublePojo) {
@@ -440,8 +440,10 @@ public class ScoreCalculator {
         ptsCalculator(player1IdB, week, season);
         ptsCalculator(player2IdA, week, season);
         ptsCalculator(player2IdB, week, season);
-//        championPtsCalculator(player1Id, week, season);
-//        championPtsCalculator(player2Id, week, season);
+        championPtsCalculator(player1IdA, week, season);
+        championPtsCalculator(player1IdB, week, season);
+        championPtsCalculator(player2IdA, week, season);
+        championPtsCalculator(player2IdB, week, season);
     }
 
 //    public void ptsCalculatorOfSeason1(int playerId, int week, int season) {
@@ -571,12 +573,6 @@ public class ScoreCalculator {
             logger.error("grade record error");
         }
 
-//            System.out.println(gsPtsList);
-//            System.out.println(pmPtsList);
-//            System.out.println(afOrEtList);
-//            System.out.println(otherPtsList);
-//            System.out.println(total_pts);
-
         PtsRecordPojo ptsRecordPojo = ptsRecordService.selectByPlayerIdAndPhase(playerId, week, season);
         if (ptsRecordPojo == null) {
             if (total_pts > 0) {
@@ -594,64 +590,76 @@ public class ScoreCalculator {
         }
     }
 
-//    public void championPtsCalculator(int playerId, int week, int season) {
-//
-//        // 积分取本赛季按2GS+2PM+AF/ET+TOP8累加
-//        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(playerId, week, season);
-//
-//        int total_pts = 0;
-//        List<Integer> gsPtsList = new ArrayList<>();
-//        List<Integer> pmPtsList = new ArrayList<>();
-//        List<Integer> afOrEtList = new ArrayList<>();
-//        List<Integer> otherPtsList = new ArrayList<>();
-//        for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
-//            String eventLevel = gradeRecordPojo.getEventLevel();
-//            if (eventLevel.equals(EventLevelConstants.GS)) {
-//                gsPtsList.add(gradeRecordPojo.getPts());
-//            } else if (eventLevel.equals(EventLevelConstants.PM)) {
-//                pmPtsList.add(gradeRecordPojo.getPts());
-//            } else if (eventLevel.equals(EventLevelConstants.AF) || eventLevel.equals(EventLevelConstants.ET)) {
-//                afOrEtList.add(gradeRecordPojo.getPts());
-//            } else {
-//                otherPtsList.add(gradeRecordPojo.getPts());
-//            }
-//        }
-//
-//        if (gsPtsList.size() > 2 || pmPtsList.size() > 2 || afOrEtList.size() > 2) {
-//            logger.error("grade record error");
-//        } else {
-//            total_pts += CommonUtil.getSum(gsPtsList);
-//            total_pts += CommonUtil.getSum(pmPtsList);
-//            total_pts += CommonUtil.getSum(afOrEtList);
-//            if (otherPtsList.size() <= NumConstants.TOP_PTS_NUM) {
-//                total_pts += CommonUtil.getSum(otherPtsList);
-//            } else {
-//                Collections.sort(otherPtsList, new Comparator<Integer>() {
-//                    public int compare(Integer v1, Integer v2) {
-//                        return v2.compareTo(v1);
-//                    }
-//                });
-//                total_pts += CommonUtil.getSum(otherPtsList.subList(0, NumConstants.TOP_PTS_NUM));
-//            }
-//
-//            PtsRecordChampionPojo ptsRecordChampionPojo = ptsRecordChampionService.selectByPlayerIdAndPhase(playerId, week, season);
-//            if (ptsRecordChampionPojo == null) {
-//                if (total_pts > 0) {
-//                    ptsRecordChampionPojo = new PtsRecordChampionPojo();
-//                    ptsRecordChampionPojo.setPlayerId(playerId);
-//                    ptsRecordChampionPojo.setTotalPts(total_pts);
-//                    ptsRecordChampionPojo.setWeek(week);
-//                    ptsRecordChampionPojo.setSeason(season);
-//
-//                    ptsRecordChampionService.insert(ptsRecordChampionPojo);
-//                }
-//            } else {
-//                ptsRecordChampionPojo.setTotalPts(total_pts);
-//
-//                ptsRecordChampionService.updateTotalPts(ptsRecordChampionPojo);
-//            }
-//        }
-//    }
+    public void championPtsCalculator(int playerId, int week, int season) {
+
+        // 积分取本赛季按T1+T1.5+T2+(YEC+T3(TOP5)/T3(TOP6))累加
+        List<GradeRecordPojo> gradeRecordPojoList = gradeRecordService.selectGradeRecordListOfCurrentSeason(playerId, week, season);
+
+        int total_pts = 0;
+        List<Integer> mandatoryPtsList = new ArrayList<>();
+        List<Integer> yecPtsList = new ArrayList<>();
+        List<Integer> otherPtsList = new ArrayList<>();
+        for (GradeRecordPojo gradeRecordPojo : gradeRecordPojoList) {
+            String eventLevel = gradeRecordPojo.getEventLevel();
+            if (EventLevelConstants.MANDATORY_EVENT.contains(eventLevel)) {
+                mandatoryPtsList.add(gradeRecordPojo.getPts());
+            } else if (eventLevel.equals(EventLevelConstants.YEC)) {
+                yecPtsList.add(gradeRecordPojo.getPts());
+            } else {
+                otherPtsList.add(gradeRecordPojo.getPts());
+            }
+        }
+
+        if (yecPtsList.size() == 0) {
+            total_pts += CommonUtil.getSum(mandatoryPtsList);
+            if (otherPtsList.size() <= NumConstants.TOP_PTS_NUM) {
+                total_pts += CommonUtil.getSum(otherPtsList);
+            } else {
+                Collections.sort(otherPtsList, new Comparator<Integer>() {
+                    public int compare(Integer v1, Integer v2) {
+                        return v2.compareTo(v1);
+                    }
+                });
+                total_pts += CommonUtil.getSum(otherPtsList.subList(0, NumConstants.TOP_PTS_NUM));
+            }
+        } else if (yecPtsList.size() == 1) {
+            total_pts += CommonUtil.getSum(mandatoryPtsList);
+            total_pts += yecPtsList.get(0);
+            if (otherPtsList.size() <= NumConstants.TOP_PTS_NUM - 1) {
+                total_pts += CommonUtil.getSum(otherPtsList);
+            } else {
+                Collections.sort(otherPtsList, new Comparator<Integer>() {
+                    public int compare(Integer v1, Integer v2) {
+                        return v2.compareTo(v1);
+                    }
+                });
+                total_pts += CommonUtil.getSum(otherPtsList.subList(0, NumConstants.TOP_PTS_NUM - 1));
+            }
+        } else {
+            logger.error("grade record error");
+        }
+
+//        System.out.println(mandatoryPtsList);
+//        System.out.println(yecPtsList);
+//        System.out.println(otherPtsList);
+//        System.out.println(total_pts);
+
+        PtsRecordChampionPojo ptsRecordChampionPojo = ptsRecordChampionService.selectByPlayerIdAndPhase(playerId, week, season);
+        if (ptsRecordChampionPojo == null) {
+            if (total_pts > 0) {
+                ptsRecordChampionPojo = new PtsRecordChampionPojo();
+                ptsRecordChampionPojo.setPlayerId(playerId);
+                ptsRecordChampionPojo.setTotalPts(total_pts);
+                ptsRecordChampionPojo.setWeek(week);
+                ptsRecordChampionPojo.setSeason(season);
+
+                ptsRecordChampionService.insert(ptsRecordChampionPojo);
+            }
+        } else {
+            ptsRecordChampionPojo.setTotalPts(total_pts);
+            ptsRecordChampionService.updateTotalPts(ptsRecordChampionPojo);
+        }
+    }
 
 //    public void ptsRecordOfSeason1Initializer(int week, int season) {
 //
@@ -680,14 +688,14 @@ public class ScoreCalculator {
         }
     }
 
-//    public void championPtsRecordInitializer(int week, int season) {
-//
-//        List<Integer> playerIdList = playerInfoService.selectPlayerIdList();
-//
-//        for (int playerId : playerIdList) {
-//            championPtsCalculator(playerId, week, season);
-//        }
-//    }
+    public void championPtsRecordInitializer(int week, int season) {
+
+        List<Integer> playerIdList = playerInfoService.selectPlayerIdList();
+
+        for (int playerId : playerIdList) {
+            championPtsCalculator(playerId, week, season);
+        }
+    }
 
     public void rankUpdater(int week, int season) {
 
