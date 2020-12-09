@@ -33,14 +33,14 @@ public class EventInfoServiceTest {
     @Test
     public void testInsert() {
         EventInfoPojo eventInfoPojo = new EventInfoPojo();
-        eventInfoPojo.setEventId(2009);
-        eventInfoPojo.setEventName("阳澄湖半岛大满贯赛");
-        eventInfoPojo.setLevelCode("ASG");
+        eventInfoPojo.setEventId(2010);
+        eventInfoPojo.setEventName("冬日暖阳杯赛");
+        eventInfoPojo.setLevelCode("CSM");
         eventInfoPojo.setEventType(0);
-        eventInfoPojo.setEventMode(1);
-        eventInfoPojo.setWeek(10);
+        eventInfoPojo.setEventMode(2);
+        eventInfoPojo.setWeek(11);
         eventInfoPojo.setSeason(2);
-        eventInfoPojo.setDate("2020-10-31");
+        eventInfoPojo.setDate("2020-11-22");
 
         eventInfoService.insert(eventInfoPojo);
     }

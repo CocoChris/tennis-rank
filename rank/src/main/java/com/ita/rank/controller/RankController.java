@@ -67,7 +67,7 @@ public class RankController {
         long startTime = System.currentTimeMillis();
         logger.info("start updating rankInfo");
         liveRankInfoJson = rankService.queryLiveRankInfo();
-//        championRankInfoJson = rankService.queryChampionRankInfo();
+        championRankInfoJson = rankService.queryChampionRankInfo();
         logger.info("The rank info update time is: {}", sdf.format(new Date()));
         long endTime = System.currentTimeMillis();
         logger.info("程序运行时间：" + (endTime - startTime)/1000 + "s");

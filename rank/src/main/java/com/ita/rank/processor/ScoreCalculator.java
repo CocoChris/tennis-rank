@@ -211,6 +211,7 @@ public class ScoreCalculator {
         String levelCode = scoreBoardPojo.getLevelCode();
         int week = scoreBoardPojo.getWeek();
         int season = scoreBoardPojo.getSeason();
+        int wo = scoreBoardPojo.getWo();
 
         System.out.println("loser: " + eventId + ", " + round + ", " + levelCode + ", " + week + ", " + season);
 
@@ -222,6 +223,10 @@ public class ScoreCalculator {
 
         GradeRecordPojo gradeRecordPojoOfLoser = gradeRecordService.selectByPlayerId(loserId, eventId);
         if (gradeRecordPojoOfLoser == null) {
+            if (wo != 0) {
+                pts = 0;
+            }
+
             gradeRecordPojoOfLoser = new GradeRecordPojo();
             gradeRecordPojoOfLoser.setPlayerId(loserId);
             gradeRecordPojoOfLoser.setPlayerName(loserName);
