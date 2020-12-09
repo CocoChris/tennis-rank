@@ -131,9 +131,15 @@ public class H2HService {
                 h2HRecordPojo.setEventMode(eventType);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
-                h2HRecordPojo.setResultFlag(2);
-                winsOfPlayer2 += 1;
+
+                if (wo == 0) {
+                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
+                    h2HRecordPojo.setResultFlag(2);
+                    winsOfPlayer2 += 1;
+                } else {
+                    h2HRecordPojo.setScore("W/O");
+                    h2HRecordPojo.setResultFlag(0);
+                }
             } else if (ret == 2) {
                 h2HRecordPojo.setWinnerName(player1Name);
                 h2HRecordPojo.setLoserName(player2Name);
@@ -144,9 +150,15 @@ public class H2HService {
                 h2HRecordPojo.setEventMode(eventType);
                 h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                 h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-                h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
-                h2HRecordPojo.setResultFlag(1);
-                winsOfPlayer1 += 1;
+
+                if (wo == 0) {
+                    h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
+                    h2HRecordPojo.setResultFlag(1);
+                    winsOfPlayer1 += 1;
+                } else {
+                    h2HRecordPojo.setScore("W/O");
+                    h2HRecordPojo.setResultFlag(0);
+                }
             }
 
             JSONObject h2hRecordJson = new JSONObject();
@@ -273,9 +285,15 @@ public class H2HService {
                 h2HRecordDoublePojo.setEventMode(eventType);
                 h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                 h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
-                h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
-                h2HRecordDoublePojo.setResultFlag(2);
-                winsOfPlayer2 += 1;
+
+                if (wo == 0) {
+                    h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer2).append(" - ").append(scoreOfPlayer1).append(" ret.").toString());
+                    h2HRecordDoublePojo.setResultFlag(2);
+                    winsOfPlayer2 += 1;
+                } else {
+                    h2HRecordDoublePojo.setScore("W/O");
+                    h2HRecordDoublePojo.setResultFlag(0);
+                }
             } else if (ret == 2) {
                 h2HRecordDoublePojo.setWinnerNameAndRank(nameAndRankOfPlayer1);
                 h2HRecordDoublePojo.setLoserNameAndRank(nameAndRankOfPlayer2);
@@ -284,9 +302,15 @@ public class H2HService {
                 h2HRecordDoublePojo.setEventMode(eventType);
                 h2HRecordDoublePojo.setEventName(scoreBoardDoublePojo.getEventName());
                 h2HRecordDoublePojo.setRound(scoreBoardDoublePojo.getRound());
-                h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
-                h2HRecordDoublePojo.setResultFlag(1);
-                winsOfPlayer1 += 1;
+
+                if (wo == 0) {
+                    h2HRecordDoublePojo.setScore(new StringBuilder().append(scoreOfPlayer1).append(" - ").append(scoreOfPlayer2).append(" ret.").toString());
+                    h2HRecordDoublePojo.setResultFlag(1);
+                    winsOfPlayer1 += 1;
+                } else {
+                    h2HRecordDoublePojo.setScore("W/O");
+                    h2HRecordDoublePojo.setResultFlag(0);
+                }
             }
 
             JSONObject h2hRecordJson = new JSONObject();
@@ -341,18 +365,22 @@ public class H2HService {
 
             String yearOfMatch = eventInfo.getDate().split("-")[0];
 
+            int wo = scoreBoardPojo.getWo();
+
             if (scoreBoardPojo.getPlayer1Id() == playerId) {
                 rankOfPlayer = scoreBoardPojo.getPlayer1Rank();
                 rankOfTopN = scoreBoardPojo.getPlayer2Rank();
                 scoreOfPlayer = scoreBoardPojo.getPlayer1Score();
                 scoreOfTopN = scoreBoardPojo.getPlayer2Score();
                 topNName = scoreBoardPojo.getPlayer2Name();
-                if (ret == 1) {
-                    winOrLose = 1;
-                    winsOfTopN += 1;
-                } else if (ret == 2) {
-                    winOrLose = 0;
-                    winsOfPlayer += 1;
+                if (wo == 0) {
+                    if (ret == 1) {
+                        winOrLose = 1;
+                        winsOfTopN += 1;
+                    } else if (ret == 2) {
+                        winOrLose = 0;
+                        winsOfPlayer += 1;
+                    }
                 }
             } else {
                 rankOfPlayer = scoreBoardPojo.getPlayer2Rank();
@@ -360,16 +388,16 @@ public class H2HService {
                 scoreOfPlayer = scoreBoardPojo.getPlayer2Score();
                 scoreOfTopN = scoreBoardPojo.getPlayer1Score();
                 topNName = scoreBoardPojo.getPlayer1Name();
-                if (ret == 1) {
-                    winOrLose = 0;
-                    winsOfPlayer += 1;
-                } else if (ret == 2) {
-                    winOrLose = 1;
-                    winsOfTopN += 1;
+                if (wo == 0) {
+                    if (ret == 1) {
+                        winOrLose = 0;
+                        winsOfPlayer += 1;
+                    } else if (ret == 2) {
+                        winOrLose = 1;
+                        winsOfTopN += 1;
+                    }
                 }
             }
-
-            int wo = scoreBoardPojo.getWo();
 
             if (ret == 0) {
                 if (scoreOfPlayer > scoreOfTopN) {
