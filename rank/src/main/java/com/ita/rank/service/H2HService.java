@@ -382,14 +382,14 @@ public class H2HService {
                     h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-//                    if (wo == 0) {
-//                        winsOfPlayer += 1;
-//                        h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer).append(" - ").append(scoreOfTopN).toString());
-//                        h2HRecordPojo.setResultFlag(1);
-//                    } else {
-//                        h2HRecordPojo.setScore("W/O");
-//                        h2HRecordPojo.setResultFlag(0);
-//                    }
+                    if (wo == 0) {
+                        winsOfPlayer += 1;
+                        h2HRecordPojo.setScore(new StringBuilder().append(scoreOfPlayer).append(" - ").append(scoreOfTopN).toString());
+                        h2HRecordPojo.setResultFlag(1);
+                    } else {
+                        h2HRecordPojo.setScore("W/O");
+                        h2HRecordPojo.setResultFlag(0);
+                    }
                 } else {
                     h2HRecordPojo.setWinnerName(topNName);
                     h2HRecordPojo.setLoserName(playerName);
@@ -400,14 +400,14 @@ public class H2HService {
                     h2HRecordPojo.setEventMode(eventType);
                     h2HRecordPojo.setEventName(scoreBoardPojo.getEventName());
                     h2HRecordPojo.setRound(scoreBoardPojo.getRound());
-//                    if (wo == 0) {
-//                        winsOfTopN += 1;
-//                        h2HRecordPojo.setScore(new StringBuilder().append(scoreOfTopN).append(" - ").append(scoreOfPlayer).toString());
-//                        h2HRecordPojo.setResultFlag(2);
-//                    } else {
-//                        h2HRecordPojo.setScore("W/O");
-//                        h2HRecordPojo.setResultFlag(0);
-//                    }
+                    if (wo == 0) {
+                        winsOfTopN += 1;
+                        h2HRecordPojo.setScore(new StringBuilder().append(scoreOfTopN).append(" - ").append(scoreOfPlayer).toString());
+                        h2HRecordPojo.setResultFlag(2);
+                    } else {
+                        h2HRecordPojo.setScore("W/O");
+                        h2HRecordPojo.setResultFlag(0);
+                    }
                 }
             } else if (ret == 1 || ret == 2) {
                 if (ret == 1) {
