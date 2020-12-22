@@ -58,11 +58,11 @@
                        :min-width="smallCol()"
                        align="center"
                        label="阳澄湖"></el-table-column>
-      <!-- <el-table-column sortable
+      <el-table-column sortable
                        prop="ptsOfGS3"
                        :min-width="smallCol()"
                        align="center"
-                       label="旗忠"></el-table-column> -->
+                       label="旗忠"></el-table-column>
       <el-table-column sortable
                        prop="ptsOfPM1"
                        :min-width="smallCol()"
