@@ -50,11 +50,11 @@ public class ScoreCalculatorTest {
 
     @Test
     public void testGradeRecordUpdater() {
-//        scoreCalculator.ptsRecordInitializer(12, 2);
-//        scoreCalculator.rankUpdater(12, 2);
-        scoreCalculator.championPtsRecordInitializer(12, 2);
-        scoreCalculator.championRankUpdater(12, 2);
-//        currentPhaseService.updateWeek(12);
+        scoreCalculator.ptsRecordInitializer(16, 2);
+        scoreCalculator.rankUpdater(16, 2);
+        scoreCalculator.championPtsRecordInitializer(16, 2);
+        scoreCalculator.championRankUpdater(16, 2);
+        currentPhaseService.updateWeek(16);
 //
 //        scoreCalculator.gradeRecordUpdater();
 //        scoreCalculator.rankUpdater(12, 2);

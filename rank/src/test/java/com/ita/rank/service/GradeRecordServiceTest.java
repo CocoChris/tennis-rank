@@ -54,7 +54,7 @@ public class GradeRecordServiceTest {
     @Test
     public void testInsertBatch() {
         try {
-            String fileName = "src/main/resources/txt/grade_week_10_season_2.txt";
+            String fileName = "src/main/resources/txt/grade_week_13_season_2.txt";
 
             String[] splits1 = fileName.split("/");
             String[] splits2 = splits1[splits1.length - 1].split("_");

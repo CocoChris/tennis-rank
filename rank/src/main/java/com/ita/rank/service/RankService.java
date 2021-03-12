@@ -542,87 +542,92 @@ public class RankService {
     public int getStatusOfCurrWeek(int playerId, int week, int season) {
 
         EventInfoPojo eventInfoPojo = eventInfoService.selectBySeasonAndWeek(season, week);
-        if (eventInfoPojo.getEventType() == NumConstants.SINGLE_MATCH_MODE) {
 
-            List<ScoreBoardPojo> scoreBoardPojoList = scoreBoardService.selectByPlayerIdAndPhase(playerId, week, season);
-            if (scoreBoardPojoList.size() == 0) {
-                return NumConstants.DNP;
-            }
-            Collections.sort(scoreBoardPojoList, new Comparator<ScoreBoardPojo>() {
-                @Override
-                public int compare(ScoreBoardPojo o1, ScoreBoardPojo o2) {
-                    return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
-                }
-            });
+        try {
+            if (eventInfoPojo.getEventType() == NumConstants.SINGLE_MATCH_MODE) {
 
-            ScoreBoardPojo lastScoreBoardPojo = scoreBoardPojoList.get(0);
-            if (lastScoreBoardPojo.getPlayer1Id() == playerId) {
-                if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
-                    return NumConstants.IN;
-                } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
-                    return NumConstants.OUT;
+                List<ScoreBoardPojo> scoreBoardPojoList = scoreBoardService.selectByPlayerIdAndPhase(playerId, week, season);
+                if (scoreBoardPojoList.size() == 0) {
+                    return NumConstants.DNP;
                 }
-            } else if (lastScoreBoardPojo.getPlayer2Id() == playerId) {
-                if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
-                    return NumConstants.OUT;
-                } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
-                    return NumConstants.IN;
-                }
-            }
-            return NumConstants.DNP;
-        } else if (eventInfoPojo.getEventType() == NumConstants.DOUBLE_MATCH_MODE) {
-            List<ScoreBoardDoublePojo> scoreBoardDoublePojoList = scoreBoardDoubleService.selectByPlayerIdAndPhase(playerId, week, season);
-            if (scoreBoardDoublePojoList.size() == 0) {
-                return NumConstants.DNP;
-            }
-            Collections.sort(scoreBoardDoublePojoList, new Comparator<ScoreBoardDoublePojo>() {
-                @Override
-                public int compare(ScoreBoardDoublePojo o1, ScoreBoardDoublePojo o2) {
-                    return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
-                }
-            });
+                Collections.sort(scoreBoardPojoList, new Comparator<ScoreBoardPojo>() {
+                    @Override
+                    public int compare(ScoreBoardPojo o1, ScoreBoardPojo o2) {
+                        return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
+                    }
+                });
 
-            ScoreBoardDoublePojo lastScoreBoardDoublePojo = scoreBoardDoublePojoList.get(0);
-            if (lastScoreBoardDoublePojo.getPlayer1IdA() == playerId || lastScoreBoardDoublePojo.getPlayer1IdB() == playerId) {
-                int ret = lastScoreBoardDoublePojo.getRet();
-                if (ret == 0) {
-                    if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                ScoreBoardPojo lastScoreBoardPojo = scoreBoardPojoList.get(0);
+                if (lastScoreBoardPojo.getPlayer1Id() == playerId) {
+                    if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
                         return NumConstants.IN;
-                    } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                    } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
                         return NumConstants.OUT;
                     }
-                } else if (ret == 1) {
-                    return NumConstants.OUT;
-                } else if (ret == 2) {
-                    return NumConstants.IN;
-                }
-            } else if (lastScoreBoardDoublePojo.getPlayer2IdA() == playerId || lastScoreBoardDoublePojo.getPlayer2IdB() == playerId) {
-                int ret = lastScoreBoardDoublePojo.getRet();
-                if (ret == 0) {
-                    if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                } else if (lastScoreBoardPojo.getPlayer2Id() == playerId) {
+                    if (lastScoreBoardPojo.getPlayer1Score() > lastScoreBoardPojo.getPlayer2Score()) {
                         return NumConstants.OUT;
-                    } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                    } else if (lastScoreBoardPojo.getPlayer1Score() < lastScoreBoardPojo.getPlayer2Score()) {
                         return NumConstants.IN;
                     }
-                } else if (ret == 1) {
+                }
+                return NumConstants.DNP;
+            } else if (eventInfoPojo.getEventType() == NumConstants.DOUBLE_MATCH_MODE) {
+                List<ScoreBoardDoublePojo> scoreBoardDoublePojoList = scoreBoardDoubleService.selectByPlayerIdAndPhase(playerId, week, season);
+                if (scoreBoardDoublePojoList.size() == 0) {
+                    return NumConstants.DNP;
+                }
+                Collections.sort(scoreBoardDoublePojoList, new Comparator<ScoreBoardDoublePojo>() {
+                    @Override
+                    public int compare(ScoreBoardDoublePojo o1, ScoreBoardDoublePojo o2) {
+                        return -Integer.compare(EventRound.getIndexByRound(o1.getRound()), EventRound.getIndexByRound(o2.getRound()));
+                    }
+                });
+
+                ScoreBoardDoublePojo lastScoreBoardDoublePojo = scoreBoardDoublePojoList.get(0);
+                if (lastScoreBoardDoublePojo.getPlayer1IdA() == playerId || lastScoreBoardDoublePojo.getPlayer1IdB() == playerId) {
+                    int ret = lastScoreBoardDoublePojo.getRet();
+                    if (ret == 0) {
+                        if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                            return NumConstants.IN;
+                        } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                            return NumConstants.OUT;
+                        }
+                    } else if (ret == 1) {
+                        return NumConstants.OUT;
+                    } else if (ret == 2) {
+                        return NumConstants.IN;
+                    }
+                } else if (lastScoreBoardDoublePojo.getPlayer2IdA() == playerId || lastScoreBoardDoublePojo.getPlayer2IdB() == playerId) {
+                    int ret = lastScoreBoardDoublePojo.getRet();
+                    if (ret == 0) {
+                        if (lastScoreBoardDoublePojo.getPlayer1Score() > lastScoreBoardDoublePojo.getPlayer2Score()) {
+                            return NumConstants.OUT;
+                        } else if (lastScoreBoardDoublePojo.getPlayer1Score() < lastScoreBoardDoublePojo.getPlayer2Score()) {
+                            return NumConstants.IN;
+                        }
+                    } else if (ret == 1) {
+                        return NumConstants.IN;
+                    } else if (ret == 2) {
+                        return NumConstants.OUT;
+                    }
+                }
+                return NumConstants.DNP;
+            } else if (eventInfoPojo.getEventType() == NumConstants.TEAM_MATCH_MODE) {
+                int eventId = eventInfoPojo.getEventId();
+                GradeRecordPojo gradeRecordPojo = gradeRecordService.selectByPlayerId(playerId, eventId);
+                if (gradeRecordPojo == null) {
+                    return NumConstants.DNP;
+                }
+                String grade = gradeRecordPojo.getGrade();
+                if (grade == "W") {
                     return NumConstants.IN;
-                } else if (ret == 2) {
+                } else {
                     return NumConstants.OUT;
                 }
             }
+        } catch (NullPointerException e) {
             return NumConstants.DNP;
-        } else if (eventInfoPojo.getEventType() == NumConstants.TEAM_MATCH_MODE) {
-            int eventId = eventInfoPojo.getEventId();
-            GradeRecordPojo gradeRecordPojo = gradeRecordService.selectByPlayerId(playerId, eventId);
-            if (gradeRecordPojo == null) {
-                return NumConstants.DNP;
-            }
-            String grade = gradeRecordPojo.getGrade();
-            if (grade == "W") {
-                return NumConstants.IN;
-            } else {
-                return NumConstants.OUT;
-            }
         }
 
         return NumConstants.DNP;
